@@ -1,6 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 
-@import "@tabler/icons-webfont/tabler-icons.min.css";
+/* Tabler icons: only the glyphs this site uses, from the self-hosted webfont. */
+@font-face {
+  font-family: "tabler-icons";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("@tabler/icons-webfont/fonts/tabler-icons.woff2?v2.17.0") format("woff2");
+}
+.ti {
+  font-family: "tabler-icons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.ti-arrow-narrow-right:before { content: "\ea1c"; }
+.ti-brand-github:before { content: "\ec1c"; }
+.ti-brand-linkedin:before { content: "\ec8c"; }
+.ti-file-text:before { content: "\eaa2"; }
+.ti-mail:before { content: "\eae5"; }
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +33,7 @@
   --board-2: #141c2b;
   --legend: #f2f4f7;
   --legend-2: #a3aebe;
-  --steel: #5b6472;
+  --steel: #848e9d;
   --gold: #c9a24a;
   --gold-2: #e3c46e;
   --copper: #7a5e2a;

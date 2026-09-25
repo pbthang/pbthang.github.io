@@ -19,7 +19,7 @@ to see what Thang has built.
 ## Product Purpose
 
 A single-page personal portfolio for Thang Pham (full name Pham Ba Thang,
-handle `pbthang`), live at https://pbthang.netlify.app/. It exists to make a
+handle `pbthang`), live at https://pbthang.github.io/ (previously pbthang.netlify.app). It exists to make a
 hiring decision easier: show who Thang is, what he specialises in, what he has
 built, and how to contact him.
 

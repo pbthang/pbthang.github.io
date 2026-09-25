@@ -19,7 +19,8 @@ const {
   contacts,
   photo = profile.image,
 } = Astro.props as Props;
-const ogImage = new URL(photo, profile.siteUrl).href;
+const siteUrl = Astro.site?.href ?? "/";
+const ogImage = new URL(photo, siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -41,7 +42,7 @@ const ogImage = new URL(photo, profile.siteUrl).href;
     <meta name="robots" content="index, follow" />
 
     <meta property="og:title" content={`${profile.fullName} - Portfolio`} />
-    <meta property="og:url" content={profile.siteUrl} />
+    <meta property="og:url" content={siteUrl} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
     <meta

@@ -8,6 +8,6 @@ import robotsTxt from "astro-robots-txt";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), sitemap(), robotsTxt()],
-  site: "https://pbthang.netlify.app",
+  site: process.env.SITE_URL ?? "https://pbthang.github.io",
   output: "static",
 });

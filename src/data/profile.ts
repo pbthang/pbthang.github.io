@@ -11,7 +11,6 @@ export const profile = {
   role: "Software Engineer",
   company: "Anacle Systems Limited",
   location: "Singapore",
-  siteUrl: "https://pbthang.netlify.app/",
   image: "/images/profile.webp",
   resume: "/files/PhamBaThang_resume_2026.pdf",
   playlistUrl:

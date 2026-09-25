@@ -1,8 +1,8 @@
 # Pbthang's Portfolio
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/77f1ee90-5361-4717-b7e2-c5f84f6db646/deploy-status)](https://app.netlify.com/sites/pbthang/deploys)
+[![Deploy to GitHub Pages](https://github.com/pbthang/Portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/pbthang/Portfolio/actions/workflows/deploy.yml)
 
-My personal portfolio developed with [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com) and [daisyUI](https://daisyui.com), built as a static site and deployed on [Netlify](https://netlify.com) at [https://pbthang.netlify.app/](https://pbthang.netlify.app/).
+My personal portfolio developed with [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com) and [daisyUI](https://daisyui.com), built as a static site and deployed to [GitHub Pages](https://pbthang.github.io/) by the `Deploy to GitHub Pages` workflow on every push to `main`.
 
 ## ✏️ Editing content
 
@@ -17,7 +17,7 @@ All site content lives in the repo — no CMS or environment variables are requi
 | Profile photo and project images | `public/images/` |
 | Resume PDF | `public/files/` (update the path in `profile.resume` when replacing) |
 
-Netlify should publish the `dist/` directory produced by `npm run build`.
+The site URL defaults to `https://pbthang.github.io`; set `SITE_URL` at build time to generate the sitemap and Open Graph tags for a different host (e.g. Netlify).
 
 ## 🚀 Project Structure
 

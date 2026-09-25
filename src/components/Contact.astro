@@ -251,7 +251,8 @@ const label = (c: Contact) =>
   .cform-status.bad {
     color: #f0a58c;
   }
-  .send {
+  /* button.send outranks Tailwind's [type="submit"] background reset. */
+  button.send {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -270,7 +271,7 @@ const label = (c: Contact) =>
     cursor: pointer;
     transition: background 0.25s var(--ease-out), transform 0.3s var(--ease-out);
   }
-  .send:hover {
+  button.send:hover {
     background: var(--gold-2);
     box-shadow: 0 0 0 1px var(--gold), 0 0 24px rgba(201, 162, 74, 0.55);
   }
@@ -293,7 +294,7 @@ const label = (c: Contact) =>
   .send i {
     transition: transform 0.3s var(--ease-out);
   }
-  .send[disabled] {
+  button.send[disabled] {
     background: var(--steel);
     color: var(--legend);
     cursor: progress;

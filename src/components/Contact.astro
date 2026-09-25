@@ -18,10 +18,25 @@ const label = (c: Contact) =>
 
   <div class="contact-grid">
     <div class="tps">
-      <p class="tps-lede measure">
-        Open to conversations about full-stack and database work. The direct
-        lines, or the form.
-      </p>
+      <div class="op-row">
+        <figure class="operator footprint place" style="--place-delay: 40ms">
+          <span class="refdes" aria-hidden="true">OP1</span>
+          <img
+            class="op-img"
+            src="/images/operator.webp"
+            alt="Thang Pham, in a black T-shirt and glasses, holding up a phone"
+            width="480"
+            height="785"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="op-pins" aria-hidden="true"></span>
+        </figure>
+        <p class="tps-lede">
+          Open to conversations about full-stack and database work. The direct
+          lines, or the form.
+        </p>
+      </div>
       <ul class="tp-list">
         {
           contacts.map((c, i) => (
@@ -107,6 +122,55 @@ const label = (c: Contact) =>
   .tps-lede {
     margin: 0 0 1.75rem;
     color: var(--legend-2);
+  }
+  /* OP1: the operator stands on a footprint beside the lede, head clearing
+     the dashed outline the way a tall part overhangs its silkscreen. */
+  .op-row {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: end;
+    margin: 3rem 0 1.75rem;
+  }
+  .op-row .tps-lede {
+    margin: 0 0 0.75rem;
+  }
+  .operator {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 1 / 1.25;
+    border-radius: 4px;
+    overflow: visible;
+  }
+  .operator .refdes {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.7rem;
+  }
+  .op-img {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 86%;
+    height: auto;
+    max-height: 124%;
+    object-fit: contain;
+    object-position: bottom;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.6));
+  }
+  .op-pins {
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    bottom: -0.35rem;
+    height: 0.7rem;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--copper) 0 0.35rem,
+      transparent 0.35rem 1.1rem
+    );
+    opacity: 0.9;
   }
   .tp-list {
     list-style: none;
@@ -309,6 +373,10 @@ const label = (c: Contact) =>
     }
   }
   @media (max-width: 560px) {
+    .op-row {
+      grid-template-columns: 7.5rem minmax(0, 1fr);
+      align-items: end;
+    }
     .tp-list .testpoint {
       grid-template-columns: auto auto 1fr;
     }

@@ -1,69 +1,121 @@
 ---
+import type { Contact } from "../data/profile";
+import { profile } from "../data/profile";
+import { sections } from "./TitleBlock.astro";
+
 interface Props {
-  contacts: {
-    name: string;
-    link: string;
-    icon: string;
-  }[];
+  contacts: Contact[];
 }
 const { contacts } = Astro.props as Props;
-import { profile } from "../data/profile";
-
-const sections = [
-  {
-    text: "About me",
-    id: "#About",
-  },
-  {
-    text: "Skills",
-    id: "#Skills",
-  },
-  {
-    text: "My projects",
-    id: "#Projects",
-  },
-  {
-    text: "Contact",
-    id: "#Contact",
-  },
-];
+const year = new Date().getFullYear();
 ---
 
-<footer class="footer footer-center p-8 bg-primary text-primary-content">
-  <div class="grid grid-flow-col gap-4">
-    {
-      sections.map((s) => (
-        <a
-          href={s.id}
-          class="link link-hover hover:text-accent duration-150 underline-offset-4"
-        >
-          {s.text}
-        </a>
-      ))
-    }
-  </div>
-  <div>
-    <div class="grid grid-flow-col gap-4">
+<footer class="edge">
+  <span class="fiducial" aria-hidden="true"></span>
+  <div class="edge-inner">
+    <nav aria-label="Footer" class="edge-nets">
+      {sections.map((s) => <a href={`#${s.id}`}>{s.name}</a>)}
+    </nav>
+    <ul class="edge-contacts">
       {
         contacts.map((c) => (
-          <a
-            href={c.link}
-            target="_blank"
-            rel="noreferrer"
-            class="hover:text-accent duration-150"
-            aria-label={c.name}
-          >
-            <i class={`ti ti-${c.icon} text-2xl`} />
-          </a>
+          <li>
+            <a
+              href={c.link}
+              target={c.link.startsWith("mailto:") ? undefined : "_blank"}
+              rel={c.link.startsWith("mailto:") ? undefined : "noreferrer"}
+              aria-label={c.name}
+            >
+              <i class={`ti ti-${c.icon}`} aria-hidden="true" />
+            </a>
+          </li>
         ))
       }
-    </div>
-    <div class="flex items-center gap-1">
-      <i class="ti ti-map-pin text-2xl"></i>
-      <span>{profile.location}</span>
-    </div>
+    </ul>
+    <p class="edge-stamp legend">
+      PBTHANG-MAIN · REV 2026 · {profile.location} · © {year} {profile.fullName}
+    </p>
   </div>
-  <div class="leading-6">
-    <p>Made by {profile.name}</p>
-  </div>
+  <span class="fiducial fiducial-r" aria-hidden="true"></span>
 </footer>
+
+<style>
+  .edge {
+    position: relative;
+    margin-top: clamp(4rem, 9vw, 7rem);
+    padding: 2.25rem clamp(1rem, 4vw, 4rem) 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .edge-inner {
+    max-width: 78rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+  }
+  .edge-nets {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .edge-nets a {
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--legend-2);
+    text-decoration: none;
+    transition: color 0.25s var(--ease-out);
+  }
+  .edge-nets a:hover {
+    color: var(--gold-2);
+  }
+  .edge-contacts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  .edge-contacts a {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--legend);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: border-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .edge-contacts a:hover {
+    color: var(--gold-2);
+    border-color: var(--gold);
+  }
+  .edge-stamp {
+    margin: 0;
+    font-size: 0.625rem;
+    text-transform: none;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+  }
+  /* Fiducials: the optical alignment marks at the board edge. */
+  .fiducial {
+    position: absolute;
+    top: -0.45rem;
+    left: clamp(1rem, 4vw, 4rem);
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: var(--board);
+    border: 2px solid var(--copper);
+    box-shadow: inset 0 0 0 2px var(--board), inset 0 0 0 5px var(--gold);
+  }
+  .fiducial-r {
+    left: auto;
+    right: clamp(1rem, 4vw, 4rem);
+  }
+</style>

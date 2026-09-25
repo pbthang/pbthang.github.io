@@ -37,7 +37,7 @@ export const projects: Project[] = [
   {
     title: "Portfolio Website",
     description:
-      "This site: static Astro, Tailwind CSS, daisyUI, and three.js on Netlify; Lighthouse 95 accessibility, 100 SEO",
+      "This site: a static Astro build with Tailwind CSS and a three.js laptop, deployed to GitHub Pages",
     imgSrc: "/images/projects/portfolio.webp",
     link: "https://github.com/pbthang/Portfolio",
   },

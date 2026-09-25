@@ -1,0 +1,273 @@
+---
+import type { Timestamp } from "../data/timeline";
+import { padMetrics } from "../lib/pads";
+
+interface Props {
+  experience: Timestamp[];
+  education: Timestamp[];
+  others: Timestamp[];
+}
+const { experience, education, others } = Astro.props as Props;
+
+// Dates as the part number printed on a chip: "2024.08 – PRESENT".
+const partNumber = (time: string) =>
+  time
+    .replace(/(\w{3}) (\d{4})/g, (_, m, y) => {
+      const n = new Date(`${m} 1, 2000`).getMonth() + 1;
+      return `${y}.${String(n).padStart(2, "0")}`;
+    })
+    .replace(/Present/i, "PRESENT")
+    .replace(/\s?–\s?/g, " – ");
+---
+
+<section class="sec" id="experience" aria-labelledby="experience-h">
+  <div class="sec-head">
+    <h2 class="h-legend sec-title" id="experience-h">Experience</h2>
+    <span class="refdes" aria-hidden="true">U2</span>
+  </div>
+
+  <ol class="chips">
+    {
+      experience.map((t, i) => (
+        <li class="chip component place" style={`--place-delay: ${i * 70}ms`}>
+          <span class="refdes" aria-hidden="true">{`U2.${i + 1}`}</span>
+          <div class="chip-head">
+            <div>
+              <h3 class="chip-title">{t.title}</h3>
+              <p class="chip-org">{t.organization}</p>
+            </div>
+            <p class="chip-pn font-mono">
+              <time>{partNumber(t.time)}</time>
+            </p>
+          </div>
+          <ul class="chip-pins">
+            {t.description.map((d) => (
+              <li set:html={padMetrics(d)} />
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="passives">
+    <div>
+      <h3 class="h-legend passives-title">Education</h3>
+      <ol class="passive-list">
+        {
+          education.map((t, i) => (
+            <li class="passive component place" style={`--place-delay: ${i * 70}ms`}>
+              <span class="refdes" aria-hidden="true">{`R${i + 1}`}</span>
+              <p class="chip-pn font-mono">
+                <time>{partNumber(t.time)}</time>
+              </p>
+              <h4 class="passive-title">{t.title}</h4>
+              <p class="passive-org" set:html={padMetrics(t.organization)} />
+              <ul class="passive-desc">
+                {t.description.map((d) => (
+                  <li set:html={padMetrics(d)} />
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    <div>
+      <h3 class="h-legend passives-title">Recognition &amp; community</h3>
+      <ol class="passive-list">
+        {
+          others.map((t, i) => (
+            <li class="passive component place" style={`--place-delay: ${i * 70}ms`}>
+              <span class="refdes" aria-hidden="true">{`C${i + 1}`}</span>
+              <p class="chip-pn font-mono">
+                <time>{partNumber(t.time)}</time>
+              </p>
+              <h4 class="passive-title" set:html={padMetrics(t.title)} />
+              <p class="passive-org">{t.organization}</p>
+              <ul class="passive-desc">
+                {t.description.map((d) => (
+                  <li set:html={padMetrics(d)} />
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .sec {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1rem, 4vw, 4rem) 0;
+  }
+  .sec-head {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.9rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  /* Trace routed in from the left bus, 45-degree bend, landing on a via. */
+  .sec-head::before {
+    content: "";
+    position: absolute;
+    left: calc(-1 * clamp(1rem, 4vw, 4rem) - 1px);
+    bottom: -1px;
+    width: clamp(1rem, 4vw, 4rem);
+    height: 2px;
+    background: var(--copper);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 6px 100%);
+  }
+  .sec-head::after {
+    content: "";
+    position: absolute;
+    left: -6px;
+    bottom: -6px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--board);
+    border: 2px solid var(--copper);
+    box-shadow: inset 0 0 0 2px var(--board), inset 0 0 0 5px var(--copper);
+  }
+  .sec-head .sec-title {
+    padding-left: 0.9rem;
+  }
+  .sec-title {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    margin: 0;
+  }
+  .sec-lede {
+    color: var(--legend-2);
+    margin: -1rem 0 2rem;
+  }
+</style>
+
+<style>
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .chip {
+    padding: 1.75rem clamp(1.25rem, 3vw, 2.25rem) 1.75rem;
+    border-radius: 4px;
+  }
+  .chip:first-child {
+    border-color: rgba(201, 162, 74, 0.55);
+  }
+  .chip:first-child::before {
+    background: var(--gold);
+  }
+  .chip-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .chip-title {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin: 0 0 0.25rem;
+    text-wrap: balance;
+  }
+  .chip-org {
+    margin: 0;
+    color: var(--legend-2);
+    font-size: 1rem;
+  }
+  .chip-pn {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--legend-2);
+    white-space: nowrap;
+    padding-top: 0.35rem;
+  }
+  .chip-pins {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    max-width: 72ch;
+  }
+  .chip-pins li {
+    position: relative;
+    padding-left: 1.4rem;
+    color: var(--legend);
+  }
+  /* Each bullet is a pin: a short lead out of the chip body. */
+  .chip-pins li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--copper);
+  }
+
+  .passives {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 2rem clamp(1.25rem, 3vw, 2.5rem);
+    margin-top: 3.5rem;
+  }
+  .passives-title {
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    color: var(--legend-2);
+    margin: 0 0 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .passive-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .passive {
+    padding: 1.4rem 1.25rem 1.25rem;
+    border-radius: 3px;
+  }
+  .passive .chip-pn {
+    padding-top: 0;
+    margin-bottom: 0.5rem;
+  }
+  .passive-title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    margin: 0 0 0.15rem;
+    line-height: 1.3;
+  }
+  .passive-org {
+    margin: 0 0 0.6rem;
+    color: var(--legend-2);
+    font-size: 0.9375rem;
+  }
+  .passive-desc {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.9375rem;
+    color: var(--legend-2);
+  }
+</style>

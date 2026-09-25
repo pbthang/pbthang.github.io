@@ -1,0 +1,316 @@
+---
+import { profile } from "../data/profile";
+interface Props {
+  resume: string;
+}
+const { resume } = Astro.props as Props;
+
+export const sections = [
+  { name: "Experience", id: "experience", net: "U2" },
+  { name: "Projects", id: "projects", net: "U3" },
+  { name: "Skills", id: "skills", net: "J2" },
+  { name: "Contact", id: "contact", net: "TP" },
+];
+---
+
+<header class="title-block" id="title-block">
+  <a class="brand" href="#top" aria-label="Back to top">
+    <span class="legend legend-strong">PBTHANG-MAIN</span>
+    <span class="legend brand-meta">REV 2026</span>
+    <span class="legend brand-meta brand-meta-wide"
+      >Designed in {profile.location}</span
+    >
+  </a>
+
+  <nav aria-label="Sections" class="nets">
+    {
+      sections.map((s) => (
+        <a href={`#${s.id}`} class="net" data-net={s.id}>
+          <span class="net-line" aria-hidden="true" />
+          <span class="net-name">{s.name}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <a
+    class="card-edge"
+    href={resume}
+    target="_blank"
+    rel="noreferrer"
+    aria-label="Open resume (PDF)"
+  >
+    <span>Datasheet</span>
+    <i class="ti ti-file-type-pdf text-base leading-none" aria-hidden="true"></i>
+  </a>
+  <span class="edge-trace" id="edge-trace" aria-hidden="true"></span>
+</header>
+
+<!-- Left-gutter bus: the nav traces routed down the board, filled by scroll. -->
+<div class="bus" aria-hidden="true" id="bus">
+  <span class="bus-track"></span>
+  <span class="bus-fill" id="bus-fill"></span>
+  {
+    sections.map((s) => (
+      <a href={`#${s.id}`} class="via" data-via={s.id} tabindex="-1">
+        <span class="via-ring" />
+        <span class="via-label">{s.net}</span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .title-block {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding: 0.85rem clamp(1rem, 3vw, 2.5rem);
+    background: rgba(14, 20, 32, 0.82);
+    backdrop-filter: blur(10px) saturate(1.2);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .brand-meta {
+    position: relative;
+    padding-left: 0.9rem;
+  }
+  .brand-meta::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1px;
+    height: 0.8em;
+    transform: translateY(-50%);
+    background: var(--line-strong);
+  }
+  .nets {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+  .net {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    padding: 0.25rem 0;
+    text-decoration: none;
+    color: var(--legend-2);
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s var(--ease-out);
+  }
+  /* The trace under each label: copper at rest, gold when this net is live. */
+  .net-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--copper);
+    clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 100%, 4px 100%);
+    transform-origin: left center;
+    transition: background 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  }
+  .net:hover,
+  .net:focus-visible {
+    color: var(--legend);
+  }
+  .net:hover .net-line {
+    background: var(--gold-2);
+  }
+  .net[aria-current="true"] {
+    color: var(--gold-2);
+  }
+  .net[aria-current="true"] .net-line {
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(201, 162, 74, 0.55);
+  }
+
+  .edge-trace {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--gold);
+    transform-origin: left;
+    transform: scaleX(var(--progress, 0));
+    box-shadow: 0 0 10px rgba(201, 162, 74, 0.55);
+    transition: transform 0.15s linear;
+  }
+  @media (min-width: 1100px) {
+    .edge-trace {
+      display: none;
+    }
+  }
+  .bus {
+    position: fixed;
+    z-index: 30;
+    left: calc(clamp(0.5rem, 1.5vw, 1.25rem) + 1.35rem);
+    top: 7.5rem;
+    bottom: 3.5rem;
+    width: 2px;
+    display: none;
+  }
+  .bus-track,
+  .bus-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--copper);
+    opacity: 0.7;
+  }
+  .bus-fill {
+    background: var(--gold);
+    opacity: 1;
+    transform-origin: top;
+    transform: scaleY(var(--progress, 0));
+    box-shadow: 0 0 10px rgba(201, 162, 74, 0.5);
+    transition: transform 0.15s linear;
+  }
+  .via {
+    position: absolute;
+    left: 50%;
+    top: var(--at, 0%);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    pointer-events: auto;
+  }
+  .via-ring {
+    display: block;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: var(--board);
+    border: 2px solid var(--copper);
+    box-shadow: inset 0 0 0 2px var(--board), inset 0 0 0 6px var(--copper);
+    transition: border-color 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  }
+  .via-label {
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    color: var(--steel);
+    transition: color 0.35s var(--ease-out);
+  }
+  .via.live .via-ring {
+    border-color: var(--gold);
+    box-shadow: inset 0 0 0 2px var(--board), inset 0 0 0 6px var(--gold),
+      0 0 12px rgba(201, 162, 74, 0.55);
+  }
+  .via.live .via-label {
+    color: var(--gold-2);
+  }
+  @media (min-width: 1100px) {
+    .bus {
+      display: block;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .title-block {
+      grid-template-columns: 1fr auto;
+      gap: 0.6rem 1rem;
+      padding: 0.7rem 1rem;
+    }
+    .brand {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .title-block > .card-edge {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+    .nets {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-content: flex-start;
+      gap: 1.1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nets::-webkit-scrollbar {
+      display: none;
+    }
+    .net {
+      font-size: 0.6875rem;
+    }
+    .brand-meta-wide {
+      display: none;
+    }
+    .card-edge {
+      padding: 0.45rem 0.7rem 0.55rem;
+      font-size: 0.6875rem;
+    }
+  }
+</style>
+
+<script>
+  const nets = Array.from(document.querySelectorAll<HTMLAnchorElement>(".net"));
+  const vias = Array.from(document.querySelectorAll<HTMLAnchorElement>(".via"));
+  const fill = document.getElementById("bus-fill");
+  const edge = document.getElementById("edge-trace");
+  const bus = document.getElementById("bus");
+  const targets = nets
+    .map((n) => document.getElementById(n.dataset.net!))
+    .filter((el): el is HTMLElement => !!el);
+
+  // Place each via at the section's share of the scrollable range so the
+  // bus reads as a map of the board, not of the viewport.
+  const placeVias = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0 || !bus) return;
+    const offset = 80;
+    targets.forEach((t, i) => {
+      const y = Math.min(Math.max(t.offsetTop - offset, 0), max) / max;
+      vias[i]?.style.setProperty("--at", `${(y * 100).toFixed(2)}%`);
+    });
+  };
+
+  let current = "";
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    fill?.style.setProperty("--progress", progress.toFixed(4));
+    edge?.style.setProperty("--progress", progress.toFixed(4));
+
+    const probe = window.scrollY + window.innerHeight * 0.35;
+    let active = "";
+    for (const t of targets) if (t.offsetTop <= probe) active = t.id;
+    if (active === current) return;
+    current = active;
+    nets.forEach((n) =>
+      n.dataset.net === active
+        ? n.setAttribute("aria-current", "true")
+        : n.removeAttribute("aria-current")
+    );
+    vias.forEach((v) => v.classList.toggle("live", v.dataset.via === active));
+  };
+
+  placeVias();
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", () => {
+    placeVias();
+    update();
+  });
+  window.addEventListener("load", placeVias);
+</script>

@@ -1,131 +1,385 @@
-<section
-  class="flex justify-center mx-auto py-8 bg-primary w-full text-primary-content"
-  id="Contact"
->
-  <div class="container flex justify-center">
-    <div class="px-4 py-8 w-full max-w-3xl">
-      <h1 class="text-4xl font-bold max-w-fit">Contact</h1>
-      <sub class="mb-6 text-base text-neutral-content">
-        <span>Feel free to drop me a message</span>
-        <i class="ti ti-message text-base"></i>
-      </sub>
-      <div class="mt-6 text-base-content">
-        <form
-          id="contact-form"
-          name="contactForm"
-          accept-charset="utf-8"
-          action="https://formspree.io/f/mpzkjypd"
-          method="POST"
-        >
-          <div class="form-control w-full" id="form-contact-name">
-            <label class="label" for="contact-name">
-              <span class="label-text text-primary-content">Your name</span>
-              <span class="label-text-alt text-error">***</span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="contact-name"
-              placeholder="Name*"
-              required
-              auto-complete="on"
-              class="input w-full"
-            />
-          </div>
+---
+import type { Contact } from "../data/profile";
 
-          <div class="form-control w-full" id="form-contact-email">
-            <label class="label" for="contact-email">
-              <span class="label-text text-primary-content">Your email</span>
-              <span class="label-text-alt text-error">***</span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="contact-email"
-              placeholder="Email*"
-              required
-              auto-complete="on"
-              class="input w-full"
-            />
-          </div>
+interface Props {
+  contacts: Contact[];
+  playlistUrl: string;
+}
+const { contacts, playlistUrl } = Astro.props as Props;
+const label = (c: Contact) =>
+  c.name === "Email" ? c.link.replace(/^mailto:/, "") : c.link.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+---
 
-          <div class="form-control w-full" id="form-contact-subject">
-            <label class="label" for="contact-subject">
-              <span class="label-text text-primary-content">Subject</span>
-            </label>
-            <input
-              type="text"
-              name="subject"
-              id="contact-subject"
-              placeholder="Subject"
-              auto-complete="nope"
-              class="input w-full"
-            />
-          </div>
+<section class="sec" id="contact" aria-labelledby="contact-h">
+  <div class="sec-head">
+    <h2 class="h-legend sec-title" id="contact-h">Contact</h2>
+    <span class="refdes" aria-hidden="true">TP</span>
+  </div>
 
-          <div class="form-control w-full" id="form-contact-message">
-            <label class="label" for="contact-message">
-              <span class="label-text text-primary-content">Your message</span>
-              <span class="label-text-alt text-error">***</span>
-            </label>
-            <textarea
-              name="message"
-              id="contact-message"
-              placeholder="Your Message*"
-              required
-              auto-complete="nope"
-              class="textarea resize-none h-40"></textarea>
-          </div>
-          <div id="form-contact-submit">
-            <button
-              type="submit"
-              class="group btn btn-sm btn-link text-neutral-content no-underline hover:no-underline float-right mt-4 flex items-center gap-0.5"
-            >
-              <span class="text-xl transition-colors group-hover:text-secondary"
-                >SEND IT</span
+  <div class="contact-grid">
+    <div class="tps">
+      <p class="tps-lede measure">
+        Open to conversations about full-stack and database work. The direct
+        lines, or the form.
+      </p>
+      <ul class="tp-list">
+        {
+          contacts.map((c, i) => (
+            <li>
+              <a
+                class="testpoint"
+                href={c.link}
+                target={c.link.startsWith("mailto:") ? undefined : "_blank"}
+                rel={c.link.startsWith("mailto:") ? undefined : "noreferrer"}
               >
-              <i
-                class="ti ti-arrow-narrow-right text-2xl group-hover:translate-x-4 group-hover:text-secondary transition-[color_0ms,transform_300ms] ease-in-out"
-              ></i></button
-            >
-          </div>
-        </form>
+                <span class="tp-id" aria-hidden="true">{`TP${i + 1}`}</span>
+                <span class="tp-name">{c.name}</span>
+                <span class="tp-value">{label(c)}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="jack component place">
+        <span class="refdes" aria-hidden="true">J3 · AUDIO OUT</span>
+        <h3 class="jack-title">What I've been listening to</h3>
+        <iframe
+          class="jack-frame"
+          src={playlistUrl}
+          title="Spotify playlist"
+          width="100%"
+          height="352"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
       </div>
     </div>
+
+    <form
+      id="contact-form"
+      class="component place cform"
+      style="--place-delay: 100ms"
+      name="contactForm"
+      accept-charset="utf-8"
+      action="https://formspree.io/f/mpzkjypd"
+      method="POST"
+      novalidate
+    >
+      <span class="refdes" aria-hidden="true">J4 · MSG IN</span>
+      <h3 class="cform-title">Send a message</h3>
+
+      <div class="field">
+        <label for="contact-name">Name</label>
+        <input type="text" name="name" id="contact-name" required autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="contact-email">Email</label>
+        <input type="email" name="email" id="contact-email" required autocomplete="email" />
+      </div>
+      <div class="field field-wide">
+        <label for="contact-subject">Subject <span class="opt">optional</span></label>
+        <input type="text" name="subject" id="contact-subject" autocomplete="off" />
+      </div>
+      <div class="field field-wide">
+        <label for="contact-message">Message</label>
+        <textarea name="message" id="contact-message" required rows="6"></textarea>
+      </div>
+
+      <div class="cform-foot field-wide">
+        <p class="cform-status legend" id="contact-status" role="status" aria-live="polite"></p>
+        <button type="submit" class="send" id="contact-send">
+          <span class="send-label">Send message</span>
+          <span class="send-fingers" aria-hidden="true"></span>
+          <i class="ti ti-arrow-narrow-right text-lg leading-none" aria-hidden="true"></i>
+        </button>
+      </div>
+    </form>
   </div>
 </section>
 
 <style>
-  #form-contact-name {
-    grid-area: name;
-  }
-  #form-contact-email {
-    grid-area: email;
-  }
-  #form-contact-subject {
-    grid-area: subject;
-  }
-  #form-contact-message {
-    grid-area: message;
-  }
-  #form-contact-submit {
-    grid-area: submit;
-  }
-  #contact-form {
+  .contact-grid {
     display: grid;
-    grid-template: 1fr 1fr 2fr 1fr / 1fr 1fr;
-    grid-template-areas:
-      "name email"
-      "subject subject"
-      "message message"
-      "submit submit";
-    column-gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 2.5rem clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+  .tps-lede {
+    margin: 0 0 1.75rem;
+    color: var(--legend-2);
+  }
+  .tp-list {
+    list-style: none;
+    margin: 0 0 2.5rem;
+    padding: 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .tp-list .testpoint {
+    display: grid;
+    grid-template-columns: auto auto auto 1fr;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 1rem;
+    gap: 0.15rem 0.9rem;
+    align-items: baseline;
+  }
+  .tp-list .testpoint::before {
+    align-self: center;
+  }
+  .tp-id {
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: var(--steel);
+    min-width: 2.6rem;
+  }
+  .tp-name {
+    font-family: "Schibsted Grotesk", system-ui, sans-serif;
+    font-weight: 600;
+    min-width: 5rem;
+  }
+  .tp-value {
+    color: var(--legend-2);
+    font-size: 0.875rem;
+    transition: color 0.25s var(--ease-out);
+  }
+  .testpoint:hover .tp-value {
+    color: var(--gold-2);
   }
 
-  @media (max-width: 640px) {
-    #contact-form {
-      display: flex;
-      flex-direction: column;
+  .jack {
+    padding: 1.75rem 1.25rem 1.25rem;
+    border-radius: 4px;
+  }
+  .jack-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+  .jack-frame {
+    display: block;
+    border: 0;
+    border-radius: 12px;
+    background: #070a12;
+  }
+
+  .cform {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem 1rem;
+    padding: 1.75rem clamp(1.25rem, 3vw, 2rem) 1.5rem;
+    border-radius: 4px;
+  }
+  .cform-title {
+    grid-column: 1 / -1;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+  .field label {
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--legend-2);
+  }
+  .opt {
+    color: var(--steel);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    background: var(--board);
+    border: 1px solid var(--line);
+    color: var(--legend);
+    padding: 0.7rem 0.85rem;
+    font: inherit;
+    font-size: 1rem;
+    border-radius: 2px;
+    transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+  .field input:hover,
+  .field textarea:hover {
+    border-color: var(--line-strong);
+  }
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 74, 0.2);
+  }
+  .field.invalid input,
+  .field.invalid textarea {
+    border-color: #e0785a;
+  }
+  .field .err {
+    color: #f0a58c;
+    font-size: 0.8125rem;
+  }
+
+  .cform-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+  .cform-status {
+    margin: 0;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.8125rem;
+    min-height: 1.2em;
+  }
+  .cform-status.ok {
+    color: var(--gold-2);
+  }
+  .cform-status.bad {
+    color: #f0a58c;
+  }
+  .send {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.4rem 1.05rem;
+    background: var(--gold);
+    color: var(--board);
+    border: 0;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 0 0 1px var(--copper), 0 0 18px rgba(201, 162, 74, 0.35);
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .send:hover {
+    background: var(--gold-2);
+    box-shadow: 0 0 0 1px var(--gold), 0 0 24px rgba(201, 162, 74, 0.55);
+  }
+  .send-fingers {
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0;
+    height: 5px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--board) 0 4px,
+      transparent 4px 10px
+    );
+    opacity: 0.85;
+  }
+  .send:hover i {
+    transform: translateX(3px);
+  }
+  .send i {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .send[disabled] {
+    background: var(--steel);
+    color: var(--legend);
+    cursor: progress;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    .cform {
+      order: -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .tp-list .testpoint {
+      grid-template-columns: auto auto 1fr;
+    }
+    .tp-value {
+      grid-column: 3;
+    }
+    .cform {
+      grid-template-columns: 1fr;
+    }
+    .field-wide {
+      grid-column: auto;
     }
   }
 </style>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const status = document.getElementById("contact-status") as HTMLElement;
+  const send = document.getElementById("contact-send") as HTMLButtonElement;
+  const label = send.querySelector(".send-label") as HTMLElement;
+
+  const setStatus = (msg: string, kind: "" | "ok" | "bad") => {
+    status.textContent = msg;
+    status.className = `cform-status legend ${kind}`;
+  };
+
+  const validate = () => {
+    let ok = true;
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("[required]").forEach((el) => {
+      const field = el.closest(".field") as HTMLElement;
+      field.querySelectorAll(".err").forEach((e) => e.remove());
+      field.classList.remove("invalid");
+      let problem = "";
+      if (!el.value.trim()) problem = `${field.querySelector("label")!.childNodes[0].textContent!.trim()} is required.`;
+      else if (el.type === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value))
+        problem = "That doesn't look like an email address.";
+      if (problem) {
+        ok = false;
+        field.classList.add("invalid");
+        const err = document.createElement("span");
+        err.className = "err";
+        err.textContent = problem;
+        field.appendChild(err);
+      }
+    });
+    return ok;
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("", "");
+    if (!validate()) {
+      setStatus("Fix the fields marked above.", "bad");
+      (form.querySelector(".invalid input, .invalid textarea") as HTMLElement)?.focus();
+      return;
+    }
+    send.disabled = true;
+    label.textContent = "Sending";
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      setStatus("Sent. I'll reply by email.", "ok");
+      label.textContent = "Sent";
+    } catch {
+      setStatus("Couldn't send. Email me directly at bathang02@gmail.com.", "bad");
+      label.textContent = "Send message";
+      send.disabled = false;
+    }
+  });
+</script>

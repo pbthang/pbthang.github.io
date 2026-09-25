@@ -1,21 +1,17 @@
 ---
-import Loader from "../components/Loader.astro";
-import Navbar from "../components/Navbar.astro";
+import "../styles/global.css";
+import TitleBlock from "../components/TitleBlock.astro";
 import Footer from "../components/Footer.astro";
-import { profile } from "../data/profile";
+import { profile, type Contact } from "../data/profile";
 
 export interface Props {
   title?: string;
-  contacts?: {
-    name: string;
-    link: string;
-    icon: string;
-  }[];
+  contacts: Contact[];
   photo?: string;
 }
 
 const {
-  title = `${profile.name}'s Portfolio`,
+  title = `${profile.name} · Software Engineer`,
   contacts,
   photo = profile.image,
 } = Astro.props as Props;
@@ -23,115 +19,126 @@ const siteUrl = Astro.site?.href ?? "/";
 const ogImage = new URL(photo, siteUrl).href;
 ---
 
+<!--
+  DIRECTION CONTRACT · seed 955100e8 · mode Experience
+  THESIS: The portfolio is the motherboard the laptop runs on. Every section is a
+    placed component, every link a routed trace, every key number an exposed gold pad.
+  OWN-WORLD: Matte navy-black soldermask, white silkscreen legend, ENIG gold as the
+    only accent, copper traces with 45-degree bends, vias, fiducials, a title block.
+  STORY: A recruiter lands on a top-down board, reads the title block, watches the
+    laptop (U1) boot its console, then follows the left bus down to U2 EXPERIENCE,
+    where Anacle Systems sits on top and the metrics are gold pads. The DATASHEET
+    (resume) card-edge connector never leaves the title block.
+  FIRST VIEWPORT: title block, U1 footprint with the 3D laptop and terminal bio,
+    four traces leaving its pins toward the sections, board edge with mounting holes.
+  FORM: continuous single board, left-gutter bus doubles as nav and scroll progress,
+    pick-and-place descent as the one authored motion.
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0E1420" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.17.0/tabler-icons.min.css"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <meta
-      name="description"
-      content={profile.metaDescription}
-    />
+    <meta name="description" content={profile.metaDescription} />
     <meta name="robots" content="index, follow" />
-
     <meta property="og:title" content={`${profile.fullName} - Portfolio`} />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:description"
-      content={profile.ogDescription}
-    />
+    <meta property="og:description" content={profile.ogDescription} />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-39ELLHV7XG"
     ></script>
-    <script>
-      // @ts-ignore
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
-        // @ts-ignore
         dataLayer.push(arguments);
       }
-      // @ts-ignore
       gtag("js", new Date());
-
-      // @ts-ignore
       gtag("config", "G-39ELLHV7XG");
     </script>
   </head>
 
-  <!-- Google tag (gtag.js) -->
-
-  <body>
-    <div
-      id="preloader"
-      class="fixed z-50 bg-primary w-screen h-screen flex justify-center items-center duration-200"
-    >
-      <Loader />
-    </div>
-    <div class="page opacity-0">
-      <Navbar />
+  <body class="bg-board text-legend">
+    <div class="board">
+      <span class="hole hole-tl" aria-hidden="true"></span>
+      <span class="hole hole-tr" aria-hidden="true"></span>
+      <span class="hole hole-bl" aria-hidden="true"></span>
+      <span class="hole hole-br" aria-hidden="true"></span>
+      <TitleBlock resume={profile.resume} />
       <slot />
       <Footer contacts={contacts} />
     </div>
   </body>
 </html>
 
-<style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-  @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
-
-  html {
-    scroll-padding-top: 100px;
-    scroll-behavior: smooth;
-    font-family: Poppins, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-      Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-      sans-serif;
+<style>
+  .board {
+    position: relative;
+    min-height: 100vh;
+    margin: clamp(0.5rem, 1.5vw, 1.25rem);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--board);
+    overflow: clip;
   }
-
-  code {
-    font-family: "Source Code Pro", monospace;
+  /* Plated mounting holes at the four corners of the board. */
+  .hole {
+    position: absolute;
+    z-index: 5;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: #060911;
+    box-shadow:
+      0 0 0 2px var(--copper),
+      0 0 0 3px rgba(201, 162, 74, 0.35);
+    pointer-events: none;
   }
-
-  .mockup-window::before,
-  .mockup-code::before {
-    transition: all 0.1s ease-in-out;
+  .hole-tl {
+    top: 0.9rem;
+    left: 0.9rem;
   }
-
-  .mockup-window:hover.mockup-window::before,
-  .mockup-code:hover.mockup-code::before {
-    box-shadow: 1.4em 0 0 0 #ff605c, 2.8em 0 0 0 #ffbd44, 4.2em 0 0 0 #00ca4e;
+  .hole-tr {
+    top: 0.9rem;
+    right: 0.9rem;
   }
-
-  h1 {
-    transition: all 0.2s ease-in-out;
+  .hole-bl {
+    bottom: 0.9rem;
+    left: 0.9rem;
   }
-  h1:hover {
-    letter-spacing: 4px;
+  .hole-br {
+    bottom: 0.9rem;
+    right: 0.9rem;
   }
 </style>
 
 <script>
-  window.addEventListener("load", () => {
-    const loader = document.querySelector("#preloader");
-    const page = document.querySelector(".page");
-    const timeout1 = setTimeout(() => {
-      page.classList.remove("opacity-0");
-      loader.classList.add("opacity-0");
-    }, 100);
-    const timeout2 = setTimeout(() => {
-      loader.classList.add("hidden");
-    }, 300);
-
-    return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-    };
-  });
+  // Pick-and-place: each component descends onto its footprint once it enters view.
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  const parts = document.querySelectorAll<HTMLElement>(".place");
+  if (prefersReduced || !("IntersectionObserver" in window)) {
+    parts.forEach((p) => p.classList.add("placed"));
+  } else {
+    document.documentElement.classList.add("js-place");
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).classList.add("placed");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
+    );
+    parts.forEach((p) => io.observe(p));
+  }
 </script>

@@ -1,29 +1,23 @@
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
-    extend: {},
-  },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: [
-      {
-        mytheme: {
-          primary: "#14213d",
-          "primary-content": "#f0f3f6",
-          secondary: "#fca311",
-          accent: "#fca311",
-          neutral: "#212529",
-          "base-100": "#f0f3f6",
-          info: "#ffffff",
-          success: "#12b886",
-          warning: "#f57c00",
-          error: "#fa5252",
-          "--rounded-btn": "6px",
-          "--rounded-box": "6px",
-        },
+    extend: {
+      colors: {
+        board: "#0E1420",
+        "board-2": "#141C2B",
+        legend: "#F2F4F7",
+        "legend-2": "#A3AEBE",
+        steel: "#5B6472",
+        gold: "#C9A24A",
+        "gold-2": "#E3C46E",
+        copper: "#7A5E2A",
       },
-    ],
+      fontFamily: {
+        sans: ["Schibsted Grotesk", "system-ui", "sans-serif"],
+        mono: ["Azeret Mono", "ui-monospace", "monospace"],
+      },
+    },
   },
+  plugins: [],
 };

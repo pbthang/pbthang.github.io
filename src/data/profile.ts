@@ -34,7 +34,7 @@ export const profile = {
       "I graduated from NUS with a B.Comp. in Computer Science (Honours, Distinction).",
     ],
     interest:
-      "I specialise in full-stack development and database systems: I like owning a feature from the UI down to the schema, and making queries fast when the data gets big. I'm interested in creating applications that are aesthetically pleasing and solve real problems.",
+      "I specialise in full-stack development and database systems: I like owning a feature from the UI down to the schema, and designing systems that stay fast and fault-tolerant as they scale. I'm interested in creating applications that are aesthetically pleasing and solve real problems.",
   },
 };
 

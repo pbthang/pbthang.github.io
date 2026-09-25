@@ -20,7 +20,10 @@ export const education: Timestamp[] = [
     time: "2017 – 2020",
     title: "Hanoi – Amsterdam High School for the Gifted",
     organization: "Hanoi, Vietnam",
-    description: ["Physics"],
+    description: [
+      "Physics specialisation.",
+      "Second Prize, Hanoi Physics Olympiad.",
+    ],
   },
 ];
 
@@ -77,7 +80,7 @@ export const others: Timestamp[] = [
     title: "Full Stack Developer",
     organization: "NUS Google Developer Student Club",
     description: [
-      "Collaborated with Caregivers Alliance Limited, a non-profit organisation, on an application to streamline donation campaign management and data analysis.",
+      "Collaborated with Caregivers Alliance Limited, a non-profit organisation, on an application to streamline donation campaign management and data analysis, built with Next.js, TypeScript, Node.js, Prisma ORM, PostgreSQL, and Stripe.",
     ],
   },
   {

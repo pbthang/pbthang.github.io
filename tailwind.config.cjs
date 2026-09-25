@@ -8,7 +8,7 @@ module.exports = {
         "board-2": "#141C2B",
         legend: "#F2F4F7",
         "legend-2": "#A3AEBE",
-        steel: "#5B6472",
+        steel: "#848E9D",
         gold: "#C9A24A",
         "gold-2": "#E3C46E",
         copper: "#7A5E2A",

@@ -6,7 +6,7 @@ colors:
   soldermask-raised: "#141C2B"
   silkscreen: "#F2F4F7"
   silkscreen-muted: "#A3AEBE"
-  steel-reference: "#5B6472"
+  steel-reference: "#848E9D"
   enig-gold: "#C9A24A"
   bright-gold: "#E3C46E"
   copper-trace: "#7A5E2A"

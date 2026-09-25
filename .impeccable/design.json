@@ -67,7 +67,7 @@
       "steel-reference": {
         "role": "neutral",
         "displayName": "Steel Reference Gray",
-        "canonical": "#5B6472",
+        "canonical": "#848E9D",
         "tonalRamp": [
           "oklch(15% 0.01 260)",
           "oklch(26% 0.01 260)",

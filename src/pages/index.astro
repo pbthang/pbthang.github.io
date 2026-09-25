@@ -1,9 +1,9 @@
 ---
-import About from "../components/About.astro";
-import Contact from "../components/Contact.astro";
 import Hero from "../components/Hero.astro";
+import Experience from "../components/Experience.astro";
 import Projects from "../components/Projects.astro";
 import Skills from "../components/Skills.astro";
+import Contact from "../components/Contact.astro";
 import Layout from "../layouts/Layout.astro";
 import { profile, contacts } from "../data/profile";
 import { education, experience, others } from "../data/timeline";
@@ -12,17 +12,11 @@ import { projects } from "../data/projects";
 ---
 
 <Layout contacts={contacts} photo={profile.image}>
-  <Hero resume={profile.resume} />
-  <main class="">
-    <About
-      img={profile.image}
-      education={education}
-      experience={experience}
-      others={others}
-      playlistUrl={profile.playlistUrl}
-    />
-    <Skills skills={skills} />
+  <Hero />
+  <main>
+    <Experience experience={experience} education={education} others={others} />
     <Projects projects={projects} />
-    <Contact />
+    <Skills skills={skills} />
+    <Contact contacts={contacts} playlistUrl={profile.playlistUrl} />
   </main>
 </Layout>

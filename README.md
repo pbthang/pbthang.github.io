@@ -2,7 +2,7 @@
 
 [![Deploy to GitHub Pages](https://github.com/pbthang/Portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/pbthang/Portfolio/actions/workflows/deploy.yml)
 
-My personal portfolio developed with [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com) and [daisyUI](https://daisyui.com), built as a static site and deployed to [GitHub Pages](https://pbthang.github.io/) by the `Deploy to GitHub Pages` workflow on every push to `main`.
+My personal portfolio developed with [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com) and [three.js](https://threejs.org) — designed as a "Silkscreen" PCB board (see `DESIGN.md`) —, built as a static site and deployed to [GitHub Pages](https://pbthang.github.io/) by the `Deploy to GitHub Pages` workflow on every push to `main`.
 
 ## ✏️ Editing content
 

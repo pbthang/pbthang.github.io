@@ -1,0 +1,374 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-26T01:46:48.391+08:00",
+  "title": "Design System: Thang Pham Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "soldermask": {
+        "role": "primary",
+        "displayName": "Matte Navy Soldermask",
+        "canonical": "#0E1420",
+        "tonalRamp": [
+          "oklch(15% 0.025 260)",
+          "oklch(24% 0.025 260)",
+          "oklch(34% 0.025 260)",
+          "oklch(45% 0.025 260)",
+          "oklch(58% 0.025 260)",
+          "oklch(72% 0.025 260)",
+          "oklch(86% 0.025 260)",
+          "oklch(95% 0.025 260)"
+        ]
+      },
+      "soldermask-raised": {
+        "role": "neutral",
+        "displayName": "Raised Soldermask",
+        "canonical": "#141C2B",
+        "tonalRamp": [
+          "oklch(15% 0.025 260)",
+          "oklch(24% 0.025 260)",
+          "oklch(34% 0.025 260)",
+          "oklch(45% 0.025 260)",
+          "oklch(58% 0.025 260)",
+          "oklch(72% 0.025 260)",
+          "oklch(86% 0.025 260)",
+          "oklch(95% 0.025 260)"
+        ]
+      },
+      "silkscreen": {
+        "role": "neutral",
+        "displayName": "White Silkscreen",
+        "canonical": "#F2F4F7",
+        "tonalRamp": [
+          "oklch(15% 0.005 260)",
+          "oklch(26% 0.005 260)",
+          "oklch(38% 0.005 260)",
+          "oklch(51% 0.005 260)",
+          "oklch(64% 0.005 260)",
+          "oklch(77% 0.005 260)",
+          "oklch(89% 0.005 260)",
+          "oklch(96% 0.005 260)"
+        ]
+      },
+      "silkscreen-muted": {
+        "role": "neutral",
+        "displayName": "Muted Silkscreen",
+        "canonical": "#A3AEBE",
+        "tonalRamp": [
+          "oklch(15% 0.01 260)",
+          "oklch(26% 0.01 260)",
+          "oklch(38% 0.01 260)",
+          "oklch(51% 0.01 260)",
+          "oklch(64% 0.01 260)",
+          "oklch(77% 0.01 260)",
+          "oklch(89% 0.01 260)",
+          "oklch(96% 0.01 260)"
+        ]
+      },
+      "steel-reference": {
+        "role": "neutral",
+        "displayName": "Steel Reference Gray",
+        "canonical": "#5B6472",
+        "tonalRamp": [
+          "oklch(15% 0.01 260)",
+          "oklch(26% 0.01 260)",
+          "oklch(38% 0.01 260)",
+          "oklch(51% 0.01 260)",
+          "oklch(64% 0.01 260)",
+          "oklch(77% 0.01 260)",
+          "oklch(89% 0.01 260)",
+          "oklch(96% 0.01 260)"
+        ]
+      },
+      "enig-gold": {
+        "role": "primary",
+        "displayName": "ENIG Gold",
+        "canonical": "#C9A24A",
+        "tonalRamp": [
+          "oklch(18% 0.055 85)",
+          "oklch(28% 0.07 85)",
+          "oklch(40% 0.085 85)",
+          "oklch(52% 0.1 85)",
+          "oklch(64% 0.105 85)",
+          "oklch(76% 0.085 85)",
+          "oklch(88% 0.055 85)",
+          "oklch(95% 0.03 85)"
+        ]
+      },
+      "bright-gold": {
+        "role": "primary",
+        "displayName": "Bright Gold",
+        "canonical": "#E3C46E",
+        "tonalRamp": [
+          "oklch(18% 0.055 85)",
+          "oklch(28% 0.07 85)",
+          "oklch(40% 0.085 85)",
+          "oklch(52% 0.1 85)",
+          "oklch(64% 0.105 85)",
+          "oklch(76% 0.085 85)",
+          "oklch(88% 0.055 85)",
+          "oklch(95% 0.03 85)"
+        ]
+      },
+      "copper-trace": {
+        "role": "secondary",
+        "displayName": "Copper Trace",
+        "canonical": "#7A5E2A",
+        "tonalRamp": [
+          "oklch(17% 0.04 70)",
+          "oklch(27% 0.055 70)",
+          "oklch(38% 0.07 70)",
+          "oklch(50% 0.085 70)",
+          "oklch(62% 0.08 70)",
+          "oklch(74% 0.06 70)",
+          "oklch(87% 0.04 70)",
+          "oklch(95% 0.02 70)"
+        ]
+      },
+      "board-void": {
+        "role": "neutral",
+        "displayName": "Board Void",
+        "canonical": "#070A12",
+        "tonalRamp": [
+          "oklch(10% 0.02 260)",
+          "oklch(18% 0.02 260)",
+          "oklch(28% 0.02 260)",
+          "oklch(40% 0.02 260)",
+          "oklch(54% 0.02 260)",
+          "oklch(70% 0.02 260)",
+          "oklch(86% 0.02 260)",
+          "oklch(95% 0.02 260)"
+        ]
+      },
+      "error-copper": {
+        "role": "error",
+        "displayName": "Error Copper",
+        "canonical": "#E0785A",
+        "tonalRamp": [
+          "oklch(18% 0.055 40)",
+          "oklch(29% 0.075 40)",
+          "oklch(41% 0.095 40)",
+          "oklch(53% 0.115 40)",
+          "oklch(65% 0.105 40)",
+          "oklch(77% 0.075 40)",
+          "oklch(89% 0.045 40)",
+          "oklch(95% 0.025 40)"
+        ]
+      },
+      "error-copper-light": {
+        "role": "error",
+        "displayName": "Light Error Copper",
+        "canonical": "#F0A58C",
+        "tonalRamp": [
+          "oklch(18% 0.055 40)",
+          "oklch(29% 0.075 40)",
+          "oklch(41% 0.095 40)",
+          "oklch(53% 0.115 40)",
+          "oklch(65% 0.105 40)",
+          "oklch(77% 0.075 40)",
+          "oklch(89% 0.045 40)",
+          "oklch(95% 0.025 40)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name only."
+      },
+      "headline": {
+        "displayName": "Silkscreen Headline",
+        "purpose": "Section headings and major board labels."
+      },
+      "title": {
+        "displayName": "Component Title",
+        "purpose": "Chip, module, card, and form titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Human-readable recruiter copy."
+      },
+      "label": {
+        "displayName": "Printed Label",
+        "purpose": "Reference designators, controls, dates, nav nets, and legends."
+      }
+    },
+    "shadows": [
+      {
+        "name": "component-mass",
+        "value": "0 10px 30px -18px rgba(0, 0, 0, 0.9)",
+        "purpose": "Default shadow for placed component cards."
+      },
+      {
+        "name": "gold-net-glow",
+        "value": "0 0 18px rgba(201, 162, 74, 0.35)",
+        "purpose": "Conductive glow for active progress, live vias, hover pads, and the submit button."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px rgba(201, 162, 74, 0.2)",
+        "purpose": "Form-field focus state."
+      },
+      {
+        "name": "pin-isolation",
+        "value": "0 0 0 3px var(--board)",
+        "purpose": "Keeps image-card pin markers legible over media."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default easing for state changes and pick-and-place descent."
+      },
+      {
+        "name": "pick-and-place",
+        "value": "opacity 0.7s var(--ease-out), transform 0.9s var(--ease-out); initial transform translate3d(0, -28px, 0) scale(1.015)",
+        "purpose": "The single authored component entrance motion."
+      },
+      {
+        "name": "progress-trace",
+        "value": "transform 0.15s linear",
+        "purpose": "Scroll progress fill on the left bus or title-block trace."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-contact",
+        "value": "560px"
+      },
+      {
+        "name": "mobile-projects",
+        "value": "600px"
+      },
+      {
+        "name": "mobile-title-block",
+        "value": "760px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      },
+      {
+        "name": "desktop-bus",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Card Edge Resume",
+      "kind": "button",
+      "refersTo": "card-edge-resume",
+      "description": "Resume link styled as a card-edge connector with gold fingers.",
+      "html": "<a class=\"ds-card-edge\" href=\"#\"><span>Datasheet</span></a>",
+      "css": ".ds-card-edge { position: relative; display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.9rem 0.65rem; border: 1px solid rgba(201, 162, 74, 0.55); color: #e3c46e; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; background: #141c2b; transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-edge::after { content: ''; position: absolute; left: 0.6rem; right: 0.6rem; bottom: -1px; height: 0.25rem; background: repeating-linear-gradient(90deg, #c9a24a 0 0.35rem, transparent 0.35rem 0.6rem); } .ds-card-edge:hover, .ds-card-edge:focus-visible { border-color: #e3c46e; background: rgba(201, 162, 74, 0.1); outline: 2px solid #c9a24a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Testpoint Link",
+      "kind": "button",
+      "refersTo": "testpoint-link",
+      "description": "Transparent link with a plated circular pad used for secondary actions and external destinations.",
+      "html": "<a class=\"ds-testpoint\" href=\"#\"><span>Experience</span></a>",
+      "css": ".ds-testpoint { display: inline-flex; align-items: center; gap: 0.6rem; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: #f2f4f7; text-decoration: none; transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-testpoint::before { content: ''; width: 0.7rem; height: 0.7rem; border-radius: 50%; border: 2px solid #c9a24a; box-shadow: inset 0 0 0 2px #0e1420; background: #c9a24a; flex: none; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1); } .ds-testpoint:hover, .ds-testpoint:focus-visible { color: #e3c46e; outline: 2px solid #c9a24a; outline-offset: 3px; } .ds-testpoint:hover::before, .ds-testpoint:focus-visible::before { transform: scale(1.25); box-shadow: inset 0 0 0 1px #0e1420, 0 0 0 4px rgba(201, 162, 74, 0.25); }"
+    },
+    {
+      "name": "Component Card",
+      "kind": "card",
+      "refersTo": "component-card",
+      "description": "Raised soldermask component with silkscreen border, pin-1 marker, and reference designator.",
+      "html": "<article class=\"ds-component\"><span class=\"ds-refdes\">U2.1</span><h3>Software Engineer</h3><p>Optimised SQL queries for <mark>90% faster</mark> reporting.</p></article>",
+      "css": ".ds-component { position: relative; padding: 1.75rem 1.25rem; border: 1px solid rgba(242, 244, 247, 0.22); border-radius: 4px; background: #141c2b; color: #f2f4f7; box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.9); font-family: 'Schibsted Grotesk', system-ui, sans-serif; } .ds-component::before { content: ''; position: absolute; top: 0.6rem; left: 0.6rem; width: 0.35rem; height: 0.35rem; border-radius: 50%; background: #f2f4f7; opacity: 0.85; } .ds-refdes { position: absolute; top: 0.35rem; right: 0.7rem; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; color: #5b6472; } .ds-component h3 { margin: 0 0 0.5rem; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.015em; } .ds-component p { margin: 0; color: #a3aebe; font-size: 1rem; line-height: 1.6; } .ds-component mark { background: transparent; color: #e3c46e; font-family: 'Azeret Mono', ui-monospace, monospace; font-weight: 500; padding: 0 0.15em; box-shadow: inset 0 -0.45em 0 rgba(201, 162, 74, 0.16); border-radius: 1px; }"
+    },
+    {
+      "name": "Skill Pin",
+      "kind": "chip",
+      "refersTo": "skill-pin",
+      "description": "Skill chip rendered as a labelled pin with a square gold pad.",
+      "html": "<span class=\"ds-pin\"><span class=\"ds-pin-pad\" aria-hidden=\"true\"></span><span>TypeScript</span></span>",
+      "css": ".ds-pin { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.45rem 0.8rem 0.45rem 0.6rem; border: 1px solid rgba(242, 244, 247, 0.22); background: #0e1420; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.8125rem; letter-spacing: 0.01em; color: #f2f4f7; border-radius: 2px; transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-pin:hover { border-color: rgba(201, 162, 74, 0.6); background: rgba(201, 162, 74, 0.06); } .ds-pin-pad { width: 0.55rem; height: 0.55rem; background: #c9a24a; box-shadow: inset 0 0 0 1.5px #0e1420, inset 0 0 0 2.5px #c9a24a; flex: none; }"
+    },
+    {
+      "name": "Field Input",
+      "kind": "input",
+      "refersTo": "field-input",
+      "description": "Dark soldermask field with silkscreen label and gold focus ring.",
+      "html": "<label class=\"ds-field\"><span>Name</span><input value=\"Thang Pham\" /></label>",
+      "css": ".ds-field { display: grid; gap: 0.4rem; color: #a3aebe; font-family: 'Schibsted Grotesk', system-ui, sans-serif; } .ds-field span { font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: #a3aebe; } .ds-field input { width: 100%; background: #0e1420; border: 1px solid rgba(242, 244, 247, 0.22); color: #f2f4f7; padding: 0.7rem 0.85rem; font: inherit; font-size: 1rem; border-radius: 2px; transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-field input:hover { border-color: rgba(242, 244, 247, 0.55); } .ds-field input:focus-visible { outline: none; border-color: #c9a24a; box-shadow: 0 0 0 3px rgba(201, 162, 74, 0.2); }"
+    },
+    {
+      "name": "Send Button",
+      "kind": "button",
+      "refersTo": "send-button",
+      "description": "Primary contact action as a gold connector with negative fingers.",
+      "html": "<button class=\"ds-send\" type=\"button\"><span>Send message</span><span class=\"ds-send-fingers\" aria-hidden=\"true\"></span><span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-send { position: relative; display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1.4rem 1.05rem; background: #c9a24a; color: #0e1420; border: 0; border-radius: 2px 2px 0 0; box-shadow: 0 0 0 1px #7a5e2a, 0 0 18px rgba(201, 162, 74, 0.35); font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-send:hover { background: #e3c46e; box-shadow: 0 0 0 1px #c9a24a, 0 0 24px rgba(201, 162, 74, 0.55); } .ds-send:focus-visible { outline: 2px solid #c9a24a; outline-offset: 3px; } .ds-send:hover span:last-child { transform: translateX(3px); } .ds-send span:last-child { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-send-fingers { position: absolute; left: 0.5rem; right: 0.5rem; bottom: 0; height: 5px; background: repeating-linear-gradient(90deg, #0e1420 0 4px, transparent 4px 10px); opacity: 0.85; }"
+    },
+    {
+      "name": "Net Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Uppercase mono section net with copper trace and gold live state.",
+      "html": "<nav class=\"ds-nets\"><a class=\"ds-net ds-net-current\" href=\"#\"><span class=\"ds-net-line\"></span><span>Experience</span></a><a class=\"ds-net\" href=\"#\"><span class=\"ds-net-line\"></span><span>Projects</span></a></nav>",
+      "css": ".ds-nets { display: flex; gap: 2rem; background: rgba(14, 20, 32, 0.82); padding: 0.85rem 1rem; border-bottom: 1px solid rgba(242, 244, 247, 0.22); } .ds-net { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; padding: 0.25rem 0; text-decoration: none; color: #a3aebe; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-net-line { display: block; width: 100%; height: 2px; background: #7a5e2a; clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 100%, 4px 100%); transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1); } .ds-net:hover, .ds-net:focus-visible { color: #f2f4f7; outline: 2px solid #c9a24a; outline-offset: 3px; } .ds-net:hover .ds-net-line { background: #e3c46e; } .ds-net-current { color: #e3c46e; } .ds-net-current .ds-net-line { background: #c9a24a; box-shadow: 0 0 12px rgba(201, 162, 74, 0.55); }"
+    },
+    {
+      "name": "Section Header",
+      "kind": "custom",
+      "refersTo": "section-header",
+      "description": "Silkscreen section title with routed copper ingress and via landing.",
+      "html": "<div class=\"ds-sec-head\"><h2>Experience</h2><span>U2</span></div>",
+      "css": ".ds-sec-head { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(242, 244, 247, 0.22); color: #f2f4f7; } .ds-sec-head::before { content: ''; position: absolute; left: -4rem; bottom: -1px; width: 4rem; height: 2px; background: #7a5e2a; clip-path: polygon(0 0, 100% 0, 100% 100%, 6px 100%); } .ds-sec-head::after { content: ''; position: absolute; left: -6px; bottom: -6px; width: 11px; height: 11px; border-radius: 50%; background: #0e1420; border: 2px solid #7a5e2a; box-shadow: inset 0 0 0 2px #0e1420, inset 0 0 0 5px #7a5e2a; } .ds-sec-head h2 { margin: 0; padding-left: 0.9rem; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 600; line-height: 1.2; letter-spacing: 0.04em; text-transform: uppercase; } .ds-sec-head span { font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; color: #5b6472; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Silkscreen PCB",
+    "overview": "The portfolio is a populated circuit board: the page is one continuous matte navy soldermask, sections are placed components, links are test points, measurable proof is exposed gold plating, and the navigation doubles as routed netlist. The built world is top-down and technical without becoming a schematic; it keeps recruiter content legible while making the interface feel manufactured, inspected, and ready for service.\n\nThe system uses a small material vocabulary and repeats it strictly. White silkscreen prints identity, labels, section headers, and outlines. ENIG gold is scarce and reserved for live state, resume affordances, proof metrics, pads, form submission, and active progress. Copper traces connect regions with 45-degree bends and via rings, while tonal soldermask layers and fine borders carry most depth.",
+    "keyCharacteristics": [
+      "Continuous board shell with mounting holes, fiducials, a sticky title block, and a left bus.",
+      "White silkscreen typography over matte navy soldermask; gold appears as conductive material, not decoration.",
+      "Component cards use chip outlines, pin-1 markers, reference designators, pads, traces, and test points.",
+      "One authored entrance motion: pick-and-place descent for components as they enter view."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Metal Rule",
+        "body": "Gold is the only bright accent; do not introduce colored highlights for categories, cards, or sections.",
+        "section": "colors"
+      },
+      {
+        "name": "The Conductive Color Rule",
+        "body": "Gold and copper must behave like material: use them for pads, traces, connectors, live state, and proof, not for arbitrary decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Layer Type Rule",
+        "body": "Use Schibsted Grotesk for human prose and Azeret Mono for printed board information; do not add a third family.",
+        "section": "typography"
+      },
+      {
+        "name": "The Printed Label Rule",
+        "body": "Labels, navigation, reference designators, dates, and controls should feel printed or etched: small, uppercase where appropriate, tracked, and precise.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Board Rule",
+        "body": "Do not use generic app-card elevation stacks; surfaces sit on the board and prove hierarchy through material contrast, borders, traces, and rare glows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep every new section anchored to the board metaphor with a reference designator, a trace/via relationship, or a printed legend.",
+      "Do reserve gold for active state, proof metrics, connectors, pads, and primary action.",
+      "Do use Azeret Mono for metadata, dates, controls, section labels, and board markings.",
+      "Do maintain generous section spacing and the shared 78rem content rail.",
+      "Do honor reduced motion by collapsing authored entrance and typing effects to static content."
+    ],
+    "donts": [
+      "Don't add a second accent color for project categories, skill groups, or status states.",
+      "Don't turn chips or links into rounded SaaS pills; the built language is pads, pins, traces, and connectors.",
+      "Don't use soft glassmorphism, gradient blobs, neumorphism, or generic portfolio cards.",
+      "Don't animate multiple decorative systems at once; pick-and-place descent is the authored component motion.",
+      "Don't publish visual guidance that contradicts the shipped PCB devices: vias, traces, fiducials, holes, and connector fingers are native to the world."
+    ]
+  }
+}

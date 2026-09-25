@@ -1,98 +1,138 @@
 ---
-import CarouselCard from "./CarouselCard.astro";
+import type { Project } from "../data/projects";
+import { padMetrics } from "../lib/pads";
 
 interface Props {
-  projects: {
-    title: string;
-    description: string;
-    imgSrc: string;
-    link: string;
-  }[];
+  projects: Project[];
 }
-
 const { projects } = Astro.props as Props;
+const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 ---
 
-<section
-  class="container flex justify-center mx-auto py-8 w-full"
-  id="Projects"
->
-  <div class="px-4 py-8">
-    <h1 class="text-4xl font-bold mb-6 ml-4 max-w-fit">My projects</h1>
-    <div class="w-full max-w-8xl">
-      <div
-        class="slider whitespace-nowrap overflow-scroll overflow-y-hidden scrollbar-hide snap-mandatory snap-x w-[340px] sm:w-[600px] md:w-[720px] lg:w-[960px] xl:w-[1100px]"
-      >
-        {
-          projects.map((project) => (
-            <CarouselCard
-              id={`project-${project.title.replace(/\s+/g, "")}`}
-              title={project.title}
-              imgSrc={project.imgSrc}
-              link={project.link}
-            >
-              {project.description}
-            </CarouselCard>
-          ))
-        }
-      </div>
-      <!-- <div class="btn-group flex gap-2 justify-end w-full mt-4">
-        <button class="left-btn btn-square btn-primary btn-sm rounded"
-          >&lt;</button
-        >
-        <button class="right-btn btn-square btn-primary btn-sm rounded"
-          >&gt;</button
-        >
-      </div> -->
-      <div class="w-full flex justify-center gap-1 mt-2">
-        {
-          projects.map((p, idx) => (
-            <a href={`#project-${p.title.replace(/\s+/g, "")}`}>
-              <button class="btn-square btn-primary bg-primary btn-xs rounded">
-                {idx + 1}
-              </button>
-            </a>
-          ))
-        }
-      </div>
-    </div>
+<section class="sec" id="projects" aria-labelledby="projects-h">
+  <div class="sec-head">
+    <h2 class="h-legend sec-title" id="projects-h">Projects</h2>
+    <span class="refdes" aria-hidden="true">U3</span>
   </div>
+
+  <ul class="modules">
+    {
+      projects.map((p, i) => (
+        <li class="module component place" style={`--place-delay: ${(i % 3) * 70}ms`}>
+          <span class="refdes" aria-hidden="true">{`U3.${i + 1}`}</span>
+          <a class="module-marking" href={p.link} target="_blank" rel="noreferrer" tabindex="-1" aria-hidden="true">
+            <img src={p.imgSrc} alt="" loading="lazy" decoding="async" width="800" height="450" />
+          </a>
+          <div class="module-body">
+            <h3 class="module-title">{p.title}</h3>
+            <p class="module-desc" set:html={padMetrics(p.description)} />
+            <a class="testpoint module-tp" href={p.link} target="_blank" rel="noreferrer">
+              <span>{host(p.link)}</span>
+              <span class="sr-only">: {p.title}</span>
+            </a>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
 </section>
 
 <style>
-  /* .section {
-    scroll-margin-top: 100px;
-  } */
-  .slider {
-    scroll-behavior: smooth;
+  .modules {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.25rem;
   }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  .module {
+    grid-column: span 3;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    overflow: clip;
+    transition: border-color 0.35s var(--ease-out), transform 0.5s var(--ease-out);
   }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .module:nth-child(1),
+  .module:nth-child(2) {
+    grid-column: span 6;
+  }
+  .module:hover {
+    border-color: var(--line-strong);
+  }
+  .module::before {
+    z-index: 2;
+    box-shadow: 0 0 0 3px var(--board);
+  }
+  .module > .refdes {
+    top: auto;
+    bottom: 0.7rem;
+    right: 0.9rem;
+  }
+  .module-marking {
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: #070a12;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .module-marking img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: saturate(0.85) contrast(1.02);
+    transition: transform 0.7s var(--ease-out), filter 0.5s var(--ease-out);
+  }
+  .module:hover .module-marking img {
+    transform: scale(1.03);
+    filter: saturate(1) contrast(1);
+  }
+  .module-body {
+    padding: 1.25rem 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  .module-title {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .module-desc {
+    margin: 0;
+    color: var(--legend-2);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    flex: 1;
+  }
+  .module-tp {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  @media (max-width: 900px) {
+    .module,
+    .module:nth-child(1),
+    .module:nth-child(2) {
+      grid-column: span 6;
+    }
+  }
+  @media (max-width: 600px) {
+    .module,
+    .module:nth-child(1),
+    .module:nth-child(2) {
+      grid-column: span 12;
+    }
   }
 </style>
-
-<script>
-  // import $ from "jquery";
-
-  // const carousel = $(".slider");
-  // const btnLeft = $(".btn-group .left-btn");
-  // const btnRight = $(".btn-group .right-btn");
-  // const slideWidth = $(".slider .carousel-slide").width();
-
-  // btnLeft.click(function () {
-  //   console.log("clicked");
-  //   carousel.animate(
-  //     {
-  //       scrollLeft: $("#project-OpenRealm").offset().left,
-  //     },
-  //     "slow"
-  //   );
-  // });
-
-  // btnRight.click(function () {});
-</script>

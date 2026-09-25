@@ -1,39 +1,104 @@
 ---
-import SkillCard from "./SkillCard.astro";
+import type { SkillGroup } from "../data/skills";
+
 interface Props {
-  skills: {
-    title: string;
-    icon: string;
-    content: string[];
-    color: string;
-  }[];
+  skills: SkillGroup[];
 }
-const { skills }: Props = Astro.props;
+const { skills } = Astro.props as Props;
+const pins = (g: SkillGroup) => g.content.flatMap((c) => c.split(/,\s*/));
 ---
 
-<section class="py-8 bg-primary w-full" id="Skills">
-  <div class="flex justify-center w-full">
-    <div class="px-4 py-8 w-full max-w-md md:max-w-4xl">
-      <h1 class="text-4xl font-bold mb-6 text-primary-content max-w-fit">
-        Skills
-      </h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 grid-flow-row gap-8">
-        {
-          skills.map((skill) => (
-            <SkillCard
-              title={skill.title}
-              icon={skill.icon}
-              color={skill.color}
-            >
-              <ul>
-                {skill.content.map((content) => (
-                  <li class="">{content}</li>
-                ))}
-              </ul>
-            </SkillCard>
-          ))
-        }
-      </div>
-    </div>
+<section class="sec" id="skills" aria-labelledby="skills-h">
+  <div class="sec-head">
+    <h2 class="h-legend sec-title" id="skills-h">Skills</h2>
+    <span class="refdes" aria-hidden="true">J2</span>
+  </div>
+
+  <div class="header component place">
+    <span class="refdes" aria-hidden="true">J2 · {skills.reduce((n, g) => n + pins(g).length, 0)}-PIN</span>
+    {
+      skills.map((g, gi) => (
+        <div class="row">
+          <h3 class="row-name legend legend-strong">{g.title}</h3>
+          <ul class="row-pins">
+            {pins(g).map((p, pi) => (
+              <li class="pin" style={`--pin-delay: ${(gi * 6 + pi) * 25}ms`}>
+                <span class="pin-pad" aria-hidden="true" />
+                <span class="pin-name">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
 </section>
+
+<style>
+  .header {
+    padding: 1.75rem clamp(1.25rem, 3vw, 2.25rem) 1.5rem;
+    border-radius: 4px;
+    display: grid;
+    gap: 1.4rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 0.6rem 1.5rem;
+    align-items: start;
+    padding-top: 1.2rem;
+    border-top: 1px dashed var(--line);
+  }
+  .row:first-of-type {
+    border-top: 0;
+    padding-top: 0.5rem;
+  }
+  .row-name {
+    margin: 0;
+    padding-top: 0.4rem;
+    font-size: 0.75rem;
+  }
+  .row-pins {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.6rem;
+  }
+  /* A pin: square pad on a short lead, the name printed beside it. */
+  .pin {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.8rem 0.45rem 0.6rem;
+    border: 1px solid var(--line);
+    background: var(--board);
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    color: var(--legend);
+    border-radius: 2px;
+    transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
+  }
+  .pin:hover {
+    border-color: rgba(201, 162, 74, 0.6);
+    background: rgba(201, 162, 74, 0.06);
+  }
+  .pin-pad {
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--gold);
+    box-shadow: inset 0 0 0 1.5px var(--board), inset 0 0 0 2.5px var(--gold);
+    flex: none;
+  }
+  @media (max-width: 700px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .row-name {
+      padding-top: 0;
+    }
+  }
+</style>

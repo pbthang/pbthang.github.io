@@ -1,0 +1,257 @@
+@import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+@import "@tabler/icons-webfont/tabler-icons.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --board: #0e1420;
+  --board-2: #141c2b;
+  --legend: #f2f4f7;
+  --legend-2: #a3aebe;
+  --steel: #5b6472;
+  --gold: #c9a24a;
+  --gold-2: #e3c46e;
+  --copper: #7a5e2a;
+  --line: rgba(242, 244, 247, 0.22);
+  --line-strong: rgba(242, 244, 247, 0.55);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  background: var(--board);
+  color: var(--legend);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Schibsted Grotesk", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  /* Matte soldermask: a faint fibreglass weave under the mask. */
+  background-color: var(--board);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.018) 0 1px,
+      transparent 1px 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.018) 0 1px,
+      transparent 1px 4px
+    );
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--board);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Silkscreen legend: the pre-printed layer. */
+.legend {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--legend-2);
+  font-weight: 500;
+}
+
+.legend-strong {
+  color: var(--legend);
+}
+
+/* Reference designator printed in a component outline's corner. */
+.refdes {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--steel);
+  font-weight: 600;
+  user-select: none;
+}
+
+/* A placed component: white silkscreen outline with a pin-1 marker. */
+.component {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--board-2);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.9);
+}
+.component::before {
+  /* pin-1 marker */
+  content: "";
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--legend);
+  opacity: 0.85;
+}
+.component > .refdes {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.7rem;
+}
+
+/* Footprint: the outline that waits for a component to land. */
+.footprint {
+  border: 1px dashed var(--line);
+}
+
+/* Exposed gold pad: the numbers a reader is here for. */
+mark.pad {
+  background: transparent;
+  color: var(--gold-2);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 0.92em;
+  letter-spacing: -0.01em;
+  padding: 0 0.15em;
+  box-shadow: inset 0 -0.45em 0 rgba(201, 162, 74, 0.16);
+  border-radius: 1px;
+  white-space: nowrap;
+}
+
+/* Test point: a small ring pad with a label, used for outbound links. */
+.testpoint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--legend);
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out);
+}
+.testpoint::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  box-shadow: inset 0 0 0 2px var(--board);
+  background: var(--gold);
+  flex: none;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+.testpoint:hover,
+.testpoint:focus-visible {
+  color: var(--gold-2);
+}
+.testpoint:hover::before,
+.testpoint:focus-visible::before {
+  transform: scale(1.25);
+  box-shadow: inset 0 0 0 1px var(--board), 0 0 0 4px rgba(201, 162, 74, 0.25);
+}
+
+/* Card-edge connector: the resume. Gold fingers on a dark tab. */
+.card-edge {
+  --fingers: repeating-linear-gradient(
+    90deg,
+    var(--gold) 0 0.35rem,
+    transparent 0.35rem 0.6rem
+  );
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.9rem 0.65rem;
+  border: 1px solid rgba(201, 162, 74, 0.55);
+  color: var(--gold-2);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: var(--board-2);
+  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.card-edge::after {
+  content: "";
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: -1px;
+  height: 0.25rem;
+  background: var(--fingers);
+}
+.card-edge:hover,
+.card-edge:focus-visible {
+  border-color: var(--gold-2);
+  background: rgba(201, 162, 74, 0.1);
+}
+
+/* Section heading printed as silkscreen. */
+.h-legend {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--legend);
+}
+
+.measure {
+  max-width: 68ch;
+}
+
+/* Pick-and-place: components descend onto their footprints once. */
+.js-place .place {
+  opacity: 0;
+  transform: translate3d(0, -28px, 0) scale(1.015);
+}
+.place {
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--place-delay, 0ms);
+  will-change: opacity, transform;
+}
+.js-place .place.placed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Trace pulse along the left bus. */
+@keyframes via-blink {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js-place .place {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

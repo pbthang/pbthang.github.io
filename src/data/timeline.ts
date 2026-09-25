@@ -1,4 +1,9 @@
-import type { Timestamp } from "../components/TimelineCard.astro";
+export interface Timestamp {
+  title: string;
+  organization: string;
+  time: string;
+  description: string[];
+}
 
 export const education: Timestamp[] = [
   {

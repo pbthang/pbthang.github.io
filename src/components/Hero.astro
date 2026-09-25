@@ -1,84 +1,276 @@
 ---
 import { profile } from "../data/profile";
-interface Props {
-  resume: string;
-}
-const { resume } = Astro.props as Props;
+import { sections } from "./TitleBlock.astro";
+
 const roles = profile.typewriter.map((s) => s.replace(/[,.]$/, ""));
-const heroLabel = `Hello world! I am ${profile.name}, a ${roles
-  .slice(0, -1)
-  .join(", a ")}, and a ${roles.at(-1)}.`;
+const heroLabel = `${profile.name}: ${roles.join(", ")}.`;
+
+// The console script, in order. Shared by the DOM console and the laptop screen.
+const script: { kind: "cmd" | "out"; text: string }[] = [
+  { kind: "cmd", text: "whoami" },
+  { kind: "out", text: profile.fullName },
+  { kind: "cmd", text: "cat info.txt" },
+  ...profile.bio.info.map((t) => ({ kind: "out" as const, text: t })),
+  { kind: "cmd", text: "less interest.txt" },
+  { kind: "out", text: profile.bio.interest },
+];
 ---
 
-<div class="hero max-h-fit bg-[#0b1121] relative">
-  <a
-    class="absolute bottom-0 pt-2 pb-4 w-full group flex justify-center z-10 text-primary-content"
-    href="#About"
-    aria-label="Scroll to main section"
-  >
-    <i
-      class="ti ti-chevron-down text-4xl group-hover:translate-y-2 group-hover:text-accent duration-300"
-    ></i>
-  </a>
-  <canvas class="hero-bg w-full"></canvas>
-  <div
-    id="hero-gradient-wrapper"
-    class="hero-overlay bg-transparent absolute top-0 left-0 w-1/2 h-3/4"
-  >
-    <div
-      id="hero-gradient-shape"
-      class="w-full h-full opacity-50 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-green-300 to-purple-400"
-    >
-    </div>
-  </div>
-  <div
-    class="hero-content w-10/12 text-neutral-content z-3"
-    role="region"
-    aria-label={heroLabel}
-  >
-    <div class="max-w-3xl w-full">
-      <div class="font-mono">
-        <div class="mb-3 text-xl sm:text-3xl lg:text-4xl">Hello world!</div>
-        <div class="mb-3 text-xl sm:text-3xl lg:text-4xl">I am {profile.name},</div>
-        <div class="mb-3 text-xl sm:text-3xl lg:text-4xl">
+<section class="hero" id="top" aria-label="Introduction">
+  <div class="hero-grid">
+    <div class="intro">
+      <h1 class="name">{profile.name}</h1>
+      <p class="role font-mono" aria-label={heroLabel}>
+        <span aria-hidden="true">
           a <span id="typewriter" data-strings={JSON.stringify(profile.typewriter)}></span>
-        </div>
-      </div>
-      <a
-        href={resume}
-        class="group btn btn-sm btn-link p-0 text-neutral-content no-underline hover:no-underline items-center gap-1"
-        target="_blank"
-        rel="noreferrer"
-        role="button"
-        aria-label="view my resume"
-      >
-        <span class="text-base transition-colors group-hover:text-secondary">
-          My resume
         </span>
-        <i
-          class="ti ti-arrow-narrow-right text-2xl group-hover:translate-x-4 group-hover:text-secondary transition-[color_0ms,transform_300ms] ease-in-out"
-        ></i>
-      </a>
+      </p>
+      <p class="tagline measure">
+        {profile.role} at {profile.company}, {profile.location}. Full-stack
+        development and database systems: owning a feature from the UI down to
+        the schema, and making queries fast when the data gets big.
+      </p>
+      <div class="intro-links">
+        <a class="testpoint" href="#experience">Experience</a>
+        <a class="testpoint" href={profile.resume} target="_blank" rel="noreferrer"
+          >Resume</a
+        >
+      </div>
     </div>
+
+    <div class="u1 footprint place" style="--place-delay: 80ms">
+      <span class="refdes" aria-hidden="true">U1</span>
+      <span class="u1-legend legend" aria-hidden="true">MCU · {profile.handle}</span>
+      <canvas class="laptop" aria-hidden="true"></canvas>
+      <span class="pins pins-b" aria-hidden="true"></span>
+    </div>
+
+    <figure class="console component place" style="--place-delay: 180ms">
+      <span class="refdes" aria-hidden="true">U1 · CONSOLE</span>
+      <div class="console-body" id="console" data-script={JSON.stringify(script)}>
+        {
+          script.map((l) => (
+            <span class={`ln ln-${l.kind}`}>
+              {l.kind === "cmd" ? "$ " : ""}
+              {l.text}
+            </span>
+          ))
+        }
+        <span class="ln ln-cmd">$ <span class="caret">_</span></span>
+      </div>
+      <figcaption class="sr-only">Terminal-style introduction</figcaption>
+    </figure>
   </div>
-</div>
+
+  <!-- Traces leaving U1's bottom pins toward each section's net. -->
+  <svg class="traces" viewBox="0 0 1200 120" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+    {
+      sections.map((s, i) => {
+        // Pins under U1 on the right; each net runs left with 45-degree chamfers
+        // at a different height so no two traces cross.
+        const x0 = 790 + i * 60;
+        const x1 = 200 + i * 230;
+        const y = 22 + i * 18;
+        const c = 12;
+        return (
+          <g class="trace">
+            <path d={`M${x0} 0 V${y - c} L${x0 - c} ${y} H${x1 + c} L${x1} ${y + c} V96`} />
+            <circle cx={x1} cy="102" r="6" />
+            <text x={x1 + 14} y="106">{s.net}</text>
+          </g>
+        );
+      })
+    }
+  </svg>
+</section>
 
 <style>
-  #hero-gradient-wrapper {
-    filter: blur(64px);
+  .hero {
+    position: relative;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 4rem) 0;
+    overflow: clip;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    grid-template-areas:
+      "intro laptop"
+      "console laptop";
+    gap: 2rem clamp(1.5rem, 4vw, 4rem);
+    max-width: 78rem;
+    margin: 0 auto;
+    align-items: start;
+  }
+  .intro {
+    grid-area: intro;
+    padding-top: clamp(0.5rem, 3vw, 2.5rem);
+  }
+  .name {
+    font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+    line-height: 0.98;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    margin: 0 0 1rem;
+  }
+  .role {
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: var(--gold-2);
+    letter-spacing: 0.01em;
+    margin: 0 0 1.5rem;
+    min-height: 1.6em;
+  }
+  .tagline {
+    color: var(--legend-2);
+    font-size: 1.0625rem;
+    margin: 0 0 2rem;
+  }
+  .intro-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
   }
 
-  #hero-gradient-shape {
-    clip-path: polygon(
-      36% 100%,
-      36% 58%,
-      100% 0,
-      82% 36%,
-      100% 100%,
-      47% 0,
-      0 100%,
-      0 0
+  .u1 {
+    grid-area: laptop;
+    position: relative;
+    aspect-ratio: 1 / 0.95;
+    min-height: 22rem;
+    border-radius: 4px;
+  }
+  .u1 .refdes {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.8rem;
+  }
+  .u1-legend {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.5rem;
+    font-size: 0.625rem;
+  }
+  .u1-nodisplay::after {
+    content: "U1 · NO DISPLAY";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--steel);
+  }
+  .laptop {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  /* Pin row along the footprint's bottom edge. */
+  .pins {
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    bottom: -0.35rem;
+    height: 0.7rem;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--copper) 0 0.35rem,
+      transparent 0.35rem 1.1rem
     );
+    opacity: 0.9;
+  }
+
+  .console {
+    grid-area: console;
+    margin: 0;
+    padding: 2rem 1.25rem 1.25rem;
+    border-radius: 4px;
+  }
+  .console-body {
+    margin: 0;
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    color: var(--legend);
+    min-height: 15.5em;
+  }
+  .ln-cmd {
+    color: var(--gold-2);
+  }
+  .ln-out {
+    color: var(--legend);
+  }
+  .console-body .ln {
+    display: block;
+    white-space: pre-wrap;
+    min-height: 1.7em;
+  }
+  .console-body .ln.hidden {
+    display: none;
+  }
+  .caret {
+    animation: caret 1s steps(1) infinite;
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .traces {
+    display: block;
+    width: 100%;
+    max-width: 78rem;
+    margin: 1.5rem auto 0;
+    height: 7.5rem;
+  }
+  .trace path {
+    fill: none;
+    stroke: var(--copper);
+    stroke-width: 2;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+  .trace circle {
+    fill: var(--board);
+    stroke: var(--copper);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .trace text {
+    font-family: "Azeret Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    fill: var(--steel);
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "intro"
+        "laptop"
+        "console";
+    }
+    .u1 {
+      aspect-ratio: 4 / 3;
+      min-height: 16rem;
+    }
+    .traces {
+      height: 4.5rem;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 </style>
 
@@ -87,135 +279,260 @@ const heroLabel = `Hello world! I am ${profile.name}, a ${roles
   import * as THREE from "three";
   import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Role typewriter */
   const typewriterEl = document.querySelector("#typewriter") as HTMLElement;
-  new Typewriter(typewriterEl, {
-    strings: JSON.parse(typewriterEl.dataset.strings ?? "[]"),
-    autoStart: true,
-    loop: true,
-    cursor: "_",
-  });
+  const strings: string[] = JSON.parse(typewriterEl.dataset.strings ?? "[]");
+  if (reduced) {
+    typewriterEl.textContent = strings[0] ?? "";
+  } else {
+    new Typewriter(typewriterEl, {
+      strings,
+      autoStart: true,
+      loop: true,
+      cursor: "_",
+      delay: 55,
+    });
+  }
 
-  const setPosition = (obj: THREE.Object3D, position: Number[]) => {
-    if (!obj) return;
-    obj.position.x = position[0];
-    obj.position.y = position[1];
-    obj.position.z = position[2];
+  /* Console: one script drives the DOM console and the laptop screen. */
+  type Line = { kind: "cmd" | "out"; text: string };
+  const consoleEl = document.getElementById("console") as HTMLPreElement;
+  const script: Line[] = JSON.parse(consoleEl.dataset.script ?? "[]");
+  const lineEls = Array.from(
+    consoleEl.querySelectorAll<HTMLSpanElement>(".ln")
+  ).slice(0, script.length);
+  const promptEl = consoleEl.querySelector(".ln:last-child") as HTMLElement;
+
+  // Progress state: how many lines are complete and how far into the current one.
+  let lineIdx = script.length;
+  let charIdx = 0;
+
+  const fullText = (l: Line) => (l.kind === "cmd" ? "$ " : "") + l.text;
+
+  const renderDom = () => {
+    lineEls.forEach((el, i) => {
+      const l = script[i];
+      if (i < lineIdx) {
+        el.textContent = fullText(l);
+        el.classList.remove("hidden");
+      } else if (i === lineIdx) {
+        el.textContent = fullText(l).slice(0, charIdx);
+        el.classList.remove("hidden");
+      } else {
+        el.classList.add("hidden");
+      }
+    });
+    promptEl.style.display = lineIdx >= script.length ? "" : "none";
   };
 
-  const setRotation = (obj: THREE.Object3D, rotation: Number[]) => {
-    if (!obj) return;
-    obj.rotation.x = rotation[0];
-    obj.rotation.y = rotation[1];
-    obj.rotation.z = rotation[2];
+  /* Screen texture */
+  // The Screen mesh is UV-atlased: the display itself is the top-right region
+  // of a square texture. The atlas is drawn as the base and the console is
+  // painted into that region.
+  const ATLAS = 1536;
+  const DISPLAY = { x: 0.478, y: 0.0115, w: 0.521, h: 0.3065 };
+  const screenCanvas = document.createElement("canvas");
+  screenCanvas.width = ATLAS;
+  screenCanvas.height = ATLAS;
+  const sctx = screenCanvas.getContext("2d")!;
+  const screenTex = new THREE.CanvasTexture(screenCanvas);
+  screenTex.colorSpace = THREE.SRGBColorSpace;
+  const atlasImg = new Image();
+  atlasImg.src = "/laptop/source/ComputerScreenTextureBase.png";
+
+  const wrap = (text: string, max: number) => {
+    const words = text.split(" ");
+    const out: string[] = [];
+    let cur = "";
+    for (const w of words) {
+      if ((cur + " " + w).trim().length > max) {
+        out.push(cur.trim());
+        cur = w;
+      } else cur += " " + w;
+    }
+    if (cur.trim()) out.push(cur.trim());
+    return out;
   };
 
-  const canvas = document.querySelector(".hero-bg") as HTMLCanvasElement;
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-  camera.position.z = 24;
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    alpha: true,
-    antialias: true,
-  });
-  renderer.setClearColor(0x000000, 0);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  const drawScreen = () => {
+    const W = ATLAS;
+    sctx.fillStyle = "#101010";
+    sctx.fillRect(0, 0, W, W);
+    if (atlasImg.complete && atlasImg.naturalWidth) sctx.drawImage(atlasImg, 0, 0, W, W);
 
-  const scene = new THREE.Scene();
-  // const pmremGenerator = new THREE.PMREMGenerator(renderer);
-  // scene.environment = pmremGenerator.fromScene(
-  //   new RoomEnvironment(),
-  //   0.04
-  // ).texture;
-  const light = new THREE.DirectionalLight(0xffffff, 2.4);
-  light.position.set(-6, 10, 10);
-  scene.add(light);
+    const dx = DISPLAY.x * W;
+    const dy = DISPLAY.y * W;
+    const dw = DISPLAY.w * W;
+    const dh = DISPLAY.h * W;
+    sctx.fillStyle = "#070a12";
+    sctx.fillRect(dx, dy, dw, dh);
+    // title bar
+    const bar = dh * 0.075;
+    sctx.fillStyle = "#141c2b";
+    sctx.fillRect(dx, dy, dw, bar);
+    const fs = Math.round(dh * 0.042);
+    sctx.fillStyle = "#c9a24a";
+    sctx.font = `600 ${fs}px 'Azeret Mono', monospace`;
+    sctx.fillText("pbthang@main — zsh", dx + fs, dy + bar * 0.68);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff);
-  scene.add(ambientLight);
+    sctx.font = `500 ${fs}px 'Azeret Mono', monospace`;
+    const lh = fs * 1.45;
+    const maxCols = Math.floor((dw - fs * 2) / (fs * 0.62));
+    let y = dy + bar + lh * 1.2;
+    const bottom = dy + dh - fs * 0.6;
+    const put = (txt: string, cmd: boolean) => {
+      sctx.fillStyle = cmd ? "#e3c46e" : "#f2f4f7";
+      sctx.fillText(txt, dx + fs, y);
+      y += lh;
+    };
+    for (let i = 0; i < script.length && y < bottom; i++) {
+      const l = script[i];
+      const t = i < lineIdx ? fullText(l) : i === lineIdx ? fullText(l).slice(0, charIdx) : null;
+      if (t === null) break;
+      const segs = wrap(t, maxCols);
+      for (const seg of segs.length ? segs : [""]) {
+        if (y >= bottom) break;
+        put(seg, l.kind === "cmd");
+      }
+    }
+    if (lineIdx >= script.length && y < bottom) {
+      const blink = Math.floor(performance.now() / 500) % 2 === 0;
+      put("$ " + (blink ? "_" : ""), true);
+    }
+    screenTex.needsUpdate = true;
+  };
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.lookAt(scene.position);
+  /* Typing driver */
+  let typingDone = reduced;
+  if (!reduced) {
+    lineIdx = 0;
+    charIdx = 0;
+    renderDom();
+    const step = () => {
+      if (lineIdx >= script.length) {
+        typingDone = true;
+        renderDom();
+        return;
+      }
+      const l = script[lineIdx];
+      const full = fullText(l);
+      charIdx++;
+      if (charIdx > full.length) {
+        lineIdx++;
+        charIdx = 0;
+        renderDom();
+        setTimeout(step, l.kind === "cmd" ? 320 : 140);
+        return;
+      }
+      renderDom();
+      setTimeout(step, l.kind === "cmd" ? 60 : 12);
+    };
+    setTimeout(step, 700);
+  } else {
+    renderDom();
+  }
 
-  renderer.render(scene, camera);
+  /* Laptop scene */
+  const canvas = document.querySelector(".laptop") as HTMLCanvasElement;
+  const host = canvas.parentElement as HTMLElement;
 
-  const loader = new FBXLoader();
-  let model: THREE.Group;
-  let screen: THREE.Mesh;
-  let modelInitialRotation = [0.5, -1, 0];
-  let screenInitialRotation = [0, Math.PI, 0];
-  let modelInitialPosition = [6, -10, -20];
+  const bootLaptop = () => {
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  loader.load(
-    "/laptop/source/Laptop.fbx",
-    (object: THREE.Group) => {
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 1000);
+    camera.position.set(0, 0, 26);
+    const scene = new THREE.Scene();
+
+    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    key.position.set(-8, 12, 10);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xc9a24a, 0.45);
+    fill.position.set(10, 4, -6);
+    scene.add(fill);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+
+    const size = () => {
+      const w = host.clientWidth || 1;
+      const h = host.clientHeight || 1;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    size();
+    new ResizeObserver(size).observe(host);
+
+    let model: THREE.Group | undefined;
+    let screen: THREE.Mesh | undefined;
+    const modelRot = [0.42, -0.85, 0];
+    const screenRot = [0, Math.PI, 0];
+    const modelPos = [0.5, -7, -42];
+
+    new FBXLoader().load("/laptop/source/Laptop.fbx", (object: THREE.Group) => {
       model = object;
-      setPosition(model, modelInitialPosition);
-      setRotation(model, modelInitialRotation);
+      model.position.set(modelPos[0], modelPos[1], modelPos[2]);
+      model.rotation.set(modelRot[0], modelRot[1], modelRot[2]);
       model.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          if (child.name === "Frame") {
-            child.material.roughness = 0.5;
-          }
-          if (child.name === "Screen") {
-            child.material.roughness = 0.5;
-            child.material.metalness = 0.5;
-            screen = child;
-            setRotation(child, screenInitialRotation);
-          }
+        if (!(child instanceof THREE.Mesh)) return;
+        const mat = child.material as THREE.MeshStandardMaterial;
+        if (child.name === "Frame") {
+          mat.roughness = 0.55;
+          mat.metalness = 0.35;
+        }
+        if (child.name === "Screen") {
+          screen = child;
+          child.rotation.set(screenRot[0], screenRot[1], screenRot[2]);
+          mat.map = screenTex;
+          mat.emissive = new THREE.Color(0xffffff);
+          mat.emissiveMap = screenTex;
+          mat.emissiveIntensity = 0.9;
+          mat.roughness = 0.35;
+          mat.metalness = 0.2;
+          mat.needsUpdate = true;
         }
       });
       scene.add(model);
-    },
-    (xhr: ProgressEvent) => {
-      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-    },
-    (error: ErrorEvent) => {
-      console.log(error);
+    });
+
+    const clock = new THREE.Clock();
+    let lastDraw = 0;
+    const animate = () => {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      if (model && !reduced) {
+        model.position.y = modelPos[1] + Math.sin(t * 0.9) * 0.35;
+      }
+      const now = performance.now();
+      if (now - lastDraw > (typingDone ? 500 : 40)) {
+        drawScreen();
+        lastDraw = now;
+      }
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    if (!reduced) {
+      document.addEventListener(
+        "scroll",
+        () => {
+          const y = window.scrollY;
+          if (screen) screen.rotation.x = screenRot[0] + Math.min(y / 420, Math.PI / 2.2);
+          if (model) model.rotation.y = modelRot[1] + y * 0.0006;
+        },
+        { passive: true }
+      );
     }
-  );
+  };
 
-  const clock = new THREE.Clock();
-  function animate() {
-    // setPosition(torus2, [
-    //   torus2InitialPosition[0],
-    //   torus2InitialPosition[1] + Math.cos(clock.getElapsedTime()),
-    //   torus2InitialPosition[2],
-    // ]);
-    model &&
-      setPosition(model, [
-        modelInitialPosition[0],
-        modelInitialPosition[1] + Math.cos(clock.getElapsedTime()),
-        modelInitialPosition[2],
-      ]);
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+  try {
+    bootLaptop();
+  } catch (err) {
+    // No WebGL: the footprint stays printed and the console carries the bio.
+    canvas.remove();
+    host.classList.add("u1-nodisplay");
+    console.warn("Laptop scene unavailable:", err);
   }
-  animate();
-
-  // window.addEventListener("resize", () => {
-  //   camera.aspect = window.innerWidth / window.innerHeight;
-  //   camera.updateProjectionMatrix();
-  //   renderer.setSize(window.innerWidth, window.innerHeight);
-  // });
-
-  document.addEventListener("scroll", () => {
-    const y = window.scrollY;
-
-    setRotation(screen, [
-      screenInitialRotation[0] + Math.min(y / 300, Math.PI / 2),
-      screenInitialRotation[1],
-      screenInitialRotation[2],
-    ]);
-
-    setRotation(model, [
-      modelInitialRotation[0],
-      modelInitialRotation[1] + y * 0.001,
-      modelInitialRotation[2],
-    ]);
-  });
 </script>

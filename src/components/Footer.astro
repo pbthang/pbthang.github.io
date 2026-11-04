@@ -2,6 +2,7 @@
 import type { Contact } from "../data/profile";
 import { profile } from "../data/profile";
 import { sections } from "./TitleBlock.astro";
+import Icon from "./Icon.astro";
 
 interface Props {
   contacts: Contact[];
@@ -26,7 +27,7 @@ const year = new Date().getFullYear();
               rel={c.link.startsWith("mailto:") ? undefined : "noreferrer"}
               aria-label={c.name}
             >
-              <i class={`ti ti-${c.icon}`} aria-hidden="true" />
+              <Icon name={c.icon} />
             </a>
           </li>
         ))

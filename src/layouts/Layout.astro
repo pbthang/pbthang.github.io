@@ -71,8 +71,6 @@ const ogImage = new URL(photo, siteUrl).href;
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={profile.ogDescription} />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-39ELLHV7XG"
-    ></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -80,6 +78,19 @@ const ogImage = new URL(photo, siteUrl).href;
       }
       gtag("js", new Date());
       gtag("config", "G-39ELLHV7XG");
+      window.addEventListener("load", () => {
+        const loadAnalytics = () => {
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = "https://www.googletagmanager.com/gtag/js?id=G-39ELLHV7XG";
+          document.head.appendChild(script);
+        };
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(loadAnalytics, { timeout: 3000 });
+        } else {
+          setTimeout(loadAnalytics, 1000);
+        }
+      }, { once: true });
     </script>
   </head>
 

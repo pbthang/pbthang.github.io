@@ -1,29 +1,4 @@
 
-/* Tabler icons: only the glyphs this site uses, from the self-hosted webfont. */
-@font-face {
-  font-family: "tabler-icons";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("@tabler/icons-webfont/fonts/tabler-icons.woff2?v2.17.0") format("woff2");
-}
-.ti {
-  font-family: "tabler-icons" !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.ti-arrow-narrow-right:before { content: "\ea1c"; }
-.ti-brand-github:before { content: "\ec1c"; }
-.ti-brand-linkedin:before { content: "\ec8c"; }
-.ti-file-text:before { content: "\eaa2"; }
-.ti-mail:before { content: "\eae5"; }
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

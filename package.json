@@ -4,16 +4,22 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "images": "node scripts/generate-project-images.mjs",
+    "predev": "npm run images",
     "dev": "astro dev",
+    "prestart": "npm run images",
     "start": "astro dev",
+    "prebuild": "npm run images",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
+  "devDependencies": {
+    "sharp": "^0.31.3"
+  },
   "dependencies": {
     "@astrojs/sitemap": "^1.0.1",
     "@astrojs/tailwind": "^3.0.0",
-    "@tabler/icons-webfont": "^2.17.0",
     "astro": "^2.1.9",
     "astro-robots-txt": "^0.3.11",
     "jquery": "^3.6.3",

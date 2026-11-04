@@ -1,5 +1,6 @@
 # build output
 dist/
+public/images/projects/responsive/
 .output/
 # generated types
 .astro/

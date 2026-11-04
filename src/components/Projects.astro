@@ -7,6 +7,7 @@ interface Props {
 }
 const { projects } = Astro.props as Props;
 const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+const imageBase = (src: string) => src.replace(/\/([^/]+)\.[^.]+$/, "/responsive/$1");
 ---
 
 <section class="sec" id="projects" aria-labelledby="projects-h">
@@ -21,7 +22,14 @@ const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
         <li class="module component place" style={`--place-delay: ${(i % 3) * 70}ms`}>
           <span class="refdes" aria-hidden="true">{`U3.${i + 1}`}</span>
           <a class="module-marking" href={p.link} target="_blank" rel="noreferrer" tabindex="-1" aria-hidden="true">
-            <img src={p.imgSrc} alt="" loading="lazy" decoding="async" width="800" height="450" />
+            <img
+              src={`${imageBase(p.imgSrc)}-960.webp`}
+              srcset={[320, 640, 960].map((w) => `${imageBase(p.imgSrc)}-${w}.webp ${w}w`).join(", ")}
+              sizes={i < 2
+                ? "(max-width: 600px) 90vw, (max-width: 900px) 44vw, (max-width: 1400px) 44vw, 600px"
+                : "(max-width: 600px) 90vw, (max-width: 900px) 44vw, (max-width: 1400px) 21vw, 300px"}
+              alt="" loading="lazy" decoding="async" width="800" height="450"
+            />
           </a>
           <div class="module-body">
             <h3 class="module-title">{p.title}</h3>

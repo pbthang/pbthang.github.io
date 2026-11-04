@@ -1,7 +1,9 @@
+import type { IconName } from "../components/Icon.astro";
+
 export interface Contact {
   name: string;
   link: string;
-  icon: string;
+  icon: IconName;
 }
 
 export const profile = {

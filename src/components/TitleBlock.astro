@@ -1,5 +1,6 @@
 ---
 import { profile } from "../data/profile";
+import Icon from "./Icon.astro";
 interface Props {
   resume: string;
 }
@@ -38,11 +39,11 @@ export const sections = [
     href={resume}
     target="_blank"
     rel="noreferrer"
-    aria-label="Resume: open PDF"
+    aria-label="Resume PDF: open in a new tab"
   >
     <span>Resume</span>
     <span class="card-edge-meta">PDF</span>
-    <i class="ti ti-file-text text-base leading-none" aria-hidden="true"></i>
+    <Icon name="file-text" class="text-base leading-none" />
   </a>
   <span class="edge-trace" id="edge-trace" aria-hidden="true"></span>
 </header>
@@ -276,26 +277,30 @@ export const sections = [
 
   // Place each via at the section's share of the scrollable range so the
   // bus reads as a map of the board, not of the viewport.
+  let max = 0;
+  let positions: number[] = [];
   const placeVias = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
+    max = document.documentElement.scrollHeight - window.innerHeight;
+    positions = targets.map((t) => t.offsetTop);
     if (max <= 0 || !bus) return;
     const offset = 80;
-    targets.forEach((t, i) => {
-      const y = Math.min(Math.max(t.offsetTop - offset, 0), max) / max;
+    positions.forEach((top, i) => {
+      const y = Math.min(Math.max(top - offset, 0), max) / max;
       vias[i]?.style.setProperty("--at", `${(y * 100).toFixed(2)}%`);
     });
   };
 
   let current = "";
   const update = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
     const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
     fill?.style.setProperty("--progress", progress.toFixed(4));
     edge?.style.setProperty("--progress", progress.toFixed(4));
 
     const probe = window.scrollY + window.innerHeight * 0.35;
     let active = "";
-    for (const t of targets) if (t.offsetTop <= probe) active = t.id;
+    targets.forEach((t, i) => {
+      if (positions[i] <= probe) active = t.id;
+    });
     if (active === current) return;
     current = active;
     nets.forEach((n) =>
@@ -306,12 +311,24 @@ export const sections = [
     vias.forEach((v) => v.classList.toggle("live", v.dataset.via === active));
   };
 
-  placeVias();
-  update();
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", () => {
-    placeVias();
-    update();
-  });
-  window.addEventListener("load", placeVias);
+  let frame: number | undefined;
+  let measure = true;
+  const schedule = (remeasure = false) => {
+    measure ||= remeasure;
+    if (frame !== undefined) return;
+    frame = requestAnimationFrame(() => {
+      frame = undefined;
+      if (measure) {
+        placeVias();
+        measure = false;
+      }
+      update();
+    });
+  };
+  schedule(true);
+  window.addEventListener("scroll", () => schedule(), { passive: true });
+  window.addEventListener("resize", () => schedule(true));
+  window.addEventListener("load", () => schedule(true));
+  document.fonts.ready.then(() => schedule(true));
+  new ResizeObserver(() => schedule(true)).observe(document.body);
 </script>

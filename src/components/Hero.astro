@@ -1,17 +1,19 @@
 ---
 import { profile } from "../data/profile";
 import { sections } from "./TitleBlock.astro";
+import type { Line } from "../lib/laptop";
 
 const roles = profile.typewriter.map((s) => s.replace(/[,.]$/, ""));
 const heroLabel = `${profile.name}: ${roles.join(", ")}.`;
 
 // The console script, in order. Shared by the DOM console and the laptop screen.
-const script: { kind: "cmd" | "out"; text: string }[] = [
-  { kind: "cmd", text: "whoami" },
-  { kind: "out", text: profile.fullName },
-  { kind: "cmd", text: "cat info.txt" },
+const script: Line[] = [
+  { kind: "comment", text: `# ${profile.handle}'s developer profile` },
+  { kind: "cmd", text: "git config --get github.user" },
+  { kind: "out", text: profile.handle },
+  { kind: "cmd", text: "jq -r '.bio.info[]' profile.json" },
   ...profile.bio.info.map((t) => ({ kind: "out" as const, text: t })),
-  { kind: "cmd", text: "less interest.txt" },
+  { kind: "cmd", text: "cat -- interests.md" },
   { kind: "out", text: profile.bio.interest },
 ];
 ---
@@ -51,10 +53,7 @@ const script: { kind: "cmd" | "out"; text: string }[] = [
       <div class="console-body" id="console" data-script={JSON.stringify(script)}>
         {
           script.map((l) => (
-            <span class={`ln ln-${l.kind}`}>
-              {l.kind === "cmd" ? "$ " : ""}
-              {l.text}
-            </span>
+            <span class={`ln ln-${l.kind}`}>{`${l.kind === "cmd" ? "$ " : ""}${l.text}`}</span>
           ))
         }
         <span class="ln ln-cmd">$ <span class="caret">_</span></span>
@@ -204,13 +203,14 @@ const script: { kind: "cmd" | "out"; text: string }[] = [
   .ln-out {
     color: var(--legend);
   }
+  .ln-comment {
+    color: var(--steel);
+    font-style: italic;
+  }
   .console-body .ln {
     display: block;
     white-space: pre-wrap;
     min-height: 1.7em;
-  }
-  .console-body .ln.hidden {
-    display: none;
   }
   .caret {
     animation: caret 1s steps(1) infinite;
@@ -296,63 +296,10 @@ const script: { kind: "cmd" | "out"; text: string }[] = [
     });
   }
 
-  /* Console: one script drives the DOM console and the laptop screen. */
+  /* The laptop screen uses the same complete text as the static DOM console. */
   const consoleEl = document.getElementById("console") as HTMLPreElement;
   const script: Line[] = JSON.parse(consoleEl.dataset.script ?? "[]");
-  const lineEls = Array.from(
-    consoleEl.querySelectorAll<HTMLSpanElement>(".ln")
-  ).slice(0, script.length);
-  const promptEl = consoleEl.querySelector(".ln:last-child") as HTMLElement;
-
-  // Progress state: how many lines are complete and how far into the current one.
-  const state = { lineIdx: script.length, charIdx: 0, typingDone: reduced };
-
-  const fullText = (l: Line) => (l.kind === "cmd" ? "$ " : "") + l.text;
-
-  const renderDom = () => {
-    lineEls.forEach((el, i) => {
-      const l = script[i];
-      if (i < state.lineIdx) {
-        el.textContent = fullText(l);
-        el.classList.remove("hidden");
-      } else if (i === state.lineIdx) {
-        el.textContent = fullText(l).slice(0, state.charIdx);
-        el.classList.remove("hidden");
-      } else {
-        el.classList.add("hidden");
-      }
-    });
-    promptEl.style.display = state.lineIdx >= script.length ? "" : "none";
-  };
-
-  /* Typing driver */
-  if (!reduced) {
-    state.lineIdx = 0;
-    state.charIdx = 0;
-    renderDom();
-    const step = () => {
-      if (state.lineIdx >= script.length) {
-        state.typingDone = true;
-        renderDom();
-        return;
-      }
-      const l = script[state.lineIdx];
-      const full = fullText(l);
-      state.charIdx++;
-      if (state.charIdx > full.length) {
-        state.lineIdx++;
-        state.charIdx = 0;
-        renderDom();
-        setTimeout(step, l.kind === "cmd" ? 320 : 140);
-        return;
-      }
-      renderDom();
-      setTimeout(step, l.kind === "cmd" ? 60 : 12);
-    };
-    setTimeout(step, 700);
-  } else {
-    renderDom();
-  }
+  const state = { lineIdx: script.length, charIdx: 0, typingDone: true };
 
   /* Laptop scene: three.js is split into its own chunk and loaded after the
      first paint, so the initial bundle stays small. */

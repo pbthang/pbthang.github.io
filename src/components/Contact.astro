@@ -1,5 +1,6 @@
 ---
 import type { Contact } from "../data/profile";
+import Icon from "./Icon.astro";
 
 interface Props {
   contacts: Contact[];
@@ -105,7 +106,7 @@ const label = (c: Contact) =>
         <button type="submit" class="send" id="contact-send">
           <span class="send-label">Send message</span>
           <span class="send-fingers" aria-hidden="true"></span>
-          <i class="ti ti-arrow-narrow-right text-lg leading-none" aria-hidden="true"></i>
+          <Icon name="arrow-narrow-right" class="text-lg leading-none" />
         </button>
       </div>
     </form>

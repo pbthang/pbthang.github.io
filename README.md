@@ -19,6 +19,16 @@ All site content lives in the repo — no CMS or environment variables are requi
 
 The site URL defaults to `https://pbthang.github.io`; set `SITE_URL` at build time to generate the sitemap and Open Graph tags for a different host (e.g. Netlify).
 
+The hero laptop renders only while visible in the viewport and browser tab. It uses a 30 FPS cap and lower-resolution rendering on mobile, and redraws only on asset loads or resize when reduced motion is enabled. Rendering settings live in `src/lib/laptop.ts`.
+
+The terminal biography is visible immediately in both the page and laptop screen, without character-by-character typing. The role heading retains its typewriter animation.
+
+UI icons are inline SVGs defined in `src/components/Icon.astro`; no icon font is downloaded.
+
+Project thumbnails are generated at 320, 640, and 960 pixels wide as WebP files by `npm run images` (automatically before dev/start/build). Keep originals in `public/images/projects/`; generated files in its `responsive/` subdirectory are ignored by Git. Browsers select a thumbnail using `srcset` and the grid's responsive sizes.
+
+Scroll navigation caches section positions and batches updates per animation frame, remeasuring on layout resize and font loading. Analytics events are queued immediately, with Google's script loaded during idle time after page load; very short visits may end before it loads. GitHub Pages controls HTTP cache lifetimes; changing those requires a different host or a caching proxy.
+
 ## 🚀 Project Structure
 
 Inside of your project, you'll see the following folders and files:

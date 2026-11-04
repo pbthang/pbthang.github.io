@@ -50,7 +50,7 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
   screenTex.colorSpace = THREE.SRGBColorSpace;
   const atlasImg = new Image();
   atlasImg.crossOrigin = "anonymous";
-  atlasImg.src = "/laptop/source/ComputerScreenTextureBase.png";
+  atlasImg.src = "/laptop/optimized/ComputerScreenTextureBase.webp";
 
   const drawScreen = () => {
     const W = atlasSize;
@@ -99,8 +99,7 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
       }
     }
     if (state.lineIdx >= script.length && y < bottom) {
-      const blink = reduced || Math.floor(performance.now() / 500) % 2 === 0;
-      put("$ " + (blink ? "_" : ""), "cmd");
+      put("$ _", "cmd");
     }
     screenTex.needsUpdate = true;
   };
@@ -126,12 +125,9 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
   let inViewport = false;
   let frame: number | undefined;
   let lastFrame = -Infinity;
-  let lastDraw = -Infinity;
   let screenDirty = true;
-  let lastContent = "";
   let scrollY = window.scrollY;
   let smoothScrollY = scrollY;
-  const clock = new THREE.Clock();
   let model: THREE.Group | undefined;
   let screen: THREE.Mesh | undefined;
   const modelRot = [0.42, -0.85, 0];
@@ -150,25 +146,20 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
       schedule();
       return;
     }
-    const delta = Number.isFinite(lastFrame) ? Math.min((now - lastFrame) / 1000, 0.1) : 0;
+    const delta = Number.isFinite(lastFrame) ? Math.min((now - lastFrame) / 1000, 0.1) : 1 / 60;
     lastFrame = now;
     if (!reduced) {
       smoothScrollY = THREE.MathUtils.damp(smoothScrollY, scrollY, 12, delta);
-      const t = clock.getElapsedTime();
-      model.position.y = modelPos[1] + Math.sin(t * 0.9) * 0.35;
+      if (Math.abs(smoothScrollY - scrollY) < 0.1) smoothScrollY = scrollY;
       if (screen) screen.rotation.x = screenRot[0] + Math.min(smoothScrollY / 340, Math.PI / 2.2);
       model.rotation.y = modelRot[1] + smoothScrollY * 0.0006;
     }
-    const blink = !reduced && state.typingDone ? Math.floor(now / 500) % 2 : 0;
-    const content = `${state.lineIdx}:${state.charIdx}:${state.typingDone}:${blink}`;
-    if (screenDirty || (content !== lastContent && now - lastDraw >= 100)) {
+    if (screenDirty) {
       drawScreen();
       screenDirty = false;
-      lastContent = content;
-      lastDraw = now;
     }
     renderer.render(scene, camera);
-    if (!reduced) schedule();
+    if (!reduced && smoothScrollY !== scrollY) schedule();
   };
   const invalidateScreen = () => {
     screenDirty = true;
@@ -189,6 +180,9 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
   new ResizeObserver(size).observe(host);
 
   const manager = new THREE.LoadingManager();
+  manager.setURLModifier((url) =>
+    url.replace(/\/source\/(Computer(?:Screen)?TextureBase)\.png$/, "/optimized/$1.webp")
+  );
   manager.onLoad = schedule;
   new FBXLoader(manager).load("/laptop/source/Laptop.fbx", (object: THREE.Group) => {
     model = object;
@@ -223,12 +217,10 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
     if (!inViewport || document.hidden) {
       if (frame !== undefined) cancelAnimationFrame(frame);
       frame = undefined;
-      clock.stop();
     } else {
       scrollY = window.scrollY;
       smoothScrollY = scrollY;
       lastFrame = -Infinity;
-      clock.start();
       schedule();
     }
   };
@@ -243,6 +235,7 @@ export function bootLaptop({ canvas, host, reduced, script, state }: BootOptions
       "scroll",
       () => {
         scrollY = window.scrollY;
+        schedule();
       },
       { passive: true }
     );

@@ -287,13 +287,27 @@ const script: Line[] = [
   if (reduced) {
     typewriterEl.textContent = strings[0] ?? "";
   } else {
-    new Typewriter(typewriterEl, {
+    const typewriter = new Typewriter(typewriterEl, {
       strings,
       autoStart: true,
       loop: true,
       cursor: "_",
       delay: 55,
     });
+    let visible = true;
+    let running = true;
+    const updateTypewriter = () => {
+      const shouldRun = visible && !document.hidden;
+      if (shouldRun === running) return;
+      running = shouldRun;
+      if (running) typewriter.start();
+      else typewriter.stop();
+    };
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      updateTypewriter();
+    }).observe(typewriterEl);
+    document.addEventListener("visibilitychange", updateTypewriter);
   }
 
   /* The laptop screen uses the same complete text as the static DOM console. */
@@ -301,8 +315,7 @@ const script: Line[] = [
   const script: Line[] = JSON.parse(consoleEl.dataset.script ?? "[]");
   const state = { lineIdx: script.length, charIdx: 0, typingDone: true };
 
-  /* Laptop scene: three.js is split into its own chunk and loaded after the
-     first paint, so the initial bundle stays small. */
+  /* Do not initialize WebGL or download its assets until the laptop is nearby. */
   const canvas = document.querySelector(".laptop") as HTMLCanvasElement;
   const host = canvas.parentElement as HTMLElement;
 
@@ -313,19 +326,12 @@ const script: Line[] = [
     console.warn("Laptop scene unavailable:", err);
   };
 
-  const probe = document.createElement("canvas");
-  const hasWebGL = !!(probe.getContext("webgl2") || probe.getContext("webgl"));
-  if (!hasWebGL) {
-    fallback("WebGL not supported");
-  } else {
-    const start = () =>
-      import("../lib/laptop")
-        .then(({ bootLaptop }) => bootLaptop({ canvas, host, reduced, script, state }))
-        .catch(fallback);
-    if ("requestIdleCallback" in window) {
-      (window as any).requestIdleCallback(start, { timeout: 1500 });
-    } else {
-      setTimeout(start, 200);
-    }
-  }
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    observer.disconnect();
+    import("../lib/laptop")
+      .then(({ bootLaptop }) => bootLaptop({ canvas, host, reduced, script, state }))
+      .catch(fallback);
+  }, { rootMargin: "100px" });
+  observer.observe(host);
 </script>

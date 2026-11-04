@@ -19,13 +19,13 @@ All site content lives in the repo — no CMS or environment variables are requi
 
 The site URL defaults to `https://pbthang.github.io`; set `SITE_URL` at build time to generate the sitemap and Open Graph tags for a different host (e.g. Netlify).
 
-The hero laptop renders only while visible in the viewport and browser tab. It uses a 30 FPS cap and lower-resolution rendering on mobile, and redraws only on asset loads or resize when reduced motion is enabled. Rendering settings live in `src/lib/laptop.ts`.
+The hero laptop initializes when it is within 100 pixels of the viewport. It renders on scroll until the lid settles, or on asset loads and resize, with no idle floating animation or blinking GPU texture. Offscreen/hidden rendering is paused; reduced-motion mode remains static. It uses a 30 FPS cap and lower-resolution rendering on mobile. Rendering settings live in `src/lib/laptop.ts`.
 
-The terminal biography is visible immediately in both the page and laptop screen, without character-by-character typing. The role heading retains its typewriter animation.
+The terminal biography is visible immediately in both the page and laptop screen, without character-by-character typing. The role heading retains its typewriter animation, paused offscreen and in hidden tabs.
 
 UI icons are inline SVGs defined in `src/components/Icon.astro`; no icon font is downloaded.
 
-Project thumbnails are generated at 320, 640, and 960 pixels wide as WebP files by `npm run images` (automatically before dev/start/build). Keep originals in `public/images/projects/`; generated files in its `responsive/` subdirectory are ignored by Git. Browsers select a thumbnail using `srcset` and the grid's responsive sizes.
+Project thumbnails are generated at 320, 640, and 960 pixels wide as WebP files by `npm run images` (automatically before dev/start/build). This also generates 1024-pixel lossless WebP laptop atlases without changing their UV layout. Keep originals in `public/images/projects/` and `public/laptop/source/`; generated files in `public/images/projects/responsive/` and `public/laptop/optimized/` are ignored by Git. Browsers select a thumbnail using `srcset` and the grid's responsive sizes. Stylesheets are inlined in the static HTML to avoid a render-blocking CSS request.
 
 Scroll navigation caches section positions and batches updates per animation frame, remeasuring on layout resize and font loading. Analytics events are queued immediately, with Google's script loaded during idle time after page load; very short visits may end before it loads. GitHub Pages controls HTTP cache lifetimes; changing those requires a different host or a caching proxy.
 

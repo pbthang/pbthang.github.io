@@ -16,6 +16,7 @@ const {
   photo = profile.image,
 } = Astro.props as Props;
 const siteUrl = Astro.site?.href ?? "/";
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(photo, siteUrl).href;
 ---
 
@@ -64,6 +65,7 @@ const ogImage = new URL(photo, siteUrl).href;
     <title>{title}</title>
     <meta name="description" content={profile.metaDescription} />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl.href} />
     <meta property="og:title" content={`${profile.fullName} - Portfolio`} />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:image" content={ogImage} />
